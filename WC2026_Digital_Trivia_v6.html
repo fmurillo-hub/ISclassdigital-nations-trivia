@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Digital Nations — World Cup 2026 IS Trivia</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pitch:   #0A1F0D;
+  --turf:    #0D2B10;
+  --grass:   #1A5C22;
+  --lime:    #4ADE80;
+  --lime2:   #86EFAC;
+  --gold:    #FCD34D;
+  --gold2:   #FBBF24;
+  --red:     #F87171;
+  --blue:    #60A5FA;
+  --white:   #F8FAFC;
+  --mist:    #94A3B8;
+  --card:    rgba(255,255,255,0.04);
+  --border:  rgba(255,255,255,0.08);
+  --rank1:   #FCD34D;
+  --rank2:   #CBD5E1;
+  --rank3:   #CD7C3B;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:var(--pitch);color:var(--white);min-height:100vh;overflow-x:hidden;}
+
+/* ── HERO ── */
+.hero{
+  background: linear-gradient(160deg, #0D2B10 0%, #081A0A 60%, #0A1F0D 100%);
+  border-bottom: 3px solid var(--lime);
+  padding: 48px 40px 40px;
+  position: relative; overflow: hidden;
+  text-align: center;
+}
+.hero::before{
+  content:'';position:absolute;inset:0;
+  background-image: repeating-linear-gradient(0deg, transparent, transparent 59px, rgba(74,222,128,.06) 59px, rgba(74,222,128,.06) 60px),
+                    repeating-linear-gradient(90deg, transparent, transparent 59px, rgba(74,222,128,.04) 59px, rgba(74,222,128,.04) 60px);
+  pointer-events:none;
+}
+.hero-pill{
+  display:inline-block;
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;
+  background:rgba(74,222,128,.12);border:1px solid rgba(74,222,128,.3);color:var(--lime2);
+  padding:4px 14px;border-radius:20px;margin-bottom:18px;
+}
+.hero h1{
+  font-family:'Bebas Neue',sans-serif;font-size:clamp(52px,8vw,100px);
+  letter-spacing:2px;line-height:.9;color:var(--white);margin-bottom:8px;
+}
+.hero h1 em{color:var(--lime);font-style:normal;}
+.hero-sub{font-size:15px;color:var(--mist);margin-bottom:30px;max-width:560px;margin-left:auto;margin-right:auto;line-height:1.6;}
+.hero-stats{display:flex;justify-content:center;gap:36px;flex-wrap:wrap;}
+.hs-item .hs-n{font-family:'Bebas Neue',sans-serif;font-size:42px;color:var(--gold);line-height:1;}
+.hs-item .hs-l{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--mist);}
+
+/* ── TABS ── */
+.tabs-wrap{background:var(--turf);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:50;}
+.tabs{display:flex;gap:0;max-width:1100px;margin:0 auto;padding:0 20px;overflow-x:auto;}
+.tab-btn{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  padding:14px 20px;border:none;background:transparent;color:var(--mist);
+  cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;
+}
+.tab-btn:hover{color:var(--lime2);}
+.tab-btn.active{color:var(--lime);border-bottom-color:var(--lime);}
+
+/* ── MAIN ── */
+.main{max-width:1100px;margin:0 auto;padding:32px 20px 80px;}
+
+/* ── PANELS ── */
+.panel{display:none;}
+.panel.active{display:block;}
+
+/* ── INDEX EXPLAINER ── */
+.index-box{
+  background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.2);
+  border-left:4px solid var(--lime);border-radius:6px;padding:22px 28px;margin-bottom:28px;
+}
+.index-box h3{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--lime);margin-bottom:10px;letter-spacing:1px;}
+.index-criteria{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-top:14px;}
+.crit-pill{
+  background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;
+  padding:10px 14px;
+}
+.crit-pill .cp-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:3px;}
+.crit-pill .cp-name{font-size:12.5px;color:var(--white);font-weight:500;}
+.crit-pill .cp-weight{font-size:11px;color:var(--mist);}
+
+/* ── RANKING TABLE ── */
+.rank-controls{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:20px;align-items:center;}
+.search-box{
+  flex:1;min-width:200px;
+  background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:4px;
+  color:var(--white);font-family:'Inter',sans-serif;font-size:13.5px;padding:9px 14px;outline:none;
+}
+.search-box::placeholder{color:var(--mist);}
+.search-box:focus{border-color:rgba(74,222,128,.4);}
+.filter-btn{
+  font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;
+  padding:9px 14px;border-radius:4px;cursor:pointer;border:1px solid var(--border);
+  background:transparent;color:var(--mist);transition:all .2s;
+}
+.filter-btn:hover,.filter-btn.active{background:rgba(74,222,128,.12);color:var(--lime);border-color:rgba(74,222,128,.3);}
+
+.rank-table-wrap{overflow-x:auto;}
+table.rank-table{width:100%;border-collapse:collapse;font-size:13px;}
+table.rank-table thead tr{background:rgba(255,255,255,.04);}
+table.rank-table thead th{
+  font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--gold);padding:11px 12px;text-align:left;border-bottom:2px solid rgba(252,211,77,.3);
+  white-space:nowrap;cursor:pointer;user-select:none;
+}
+table.rank-table thead th:hover{color:var(--gold2);}
+table.rank-table thead th::after{content:' ⇅';opacity:.4;font-size:9px;}
+table.rank-table thead th.sort-asc::after{content:' ↑';opacity:1;color:var(--lime);}
+table.rank-table thead th.sort-desc::after{content:' ↓';opacity:1;color:var(--lime);}
+table.rank-table tbody tr{border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+table.rank-table tbody tr:hover{background:rgba(255,255,255,.03);}
+table.rank-table tbody td{padding:10px 12px;vertical-align:middle;}
+
+.rank-pos{font-family:'Bebas Neue',sans-serif;font-size:22px;line-height:1;width:40px;text-align:center;}
+.pos-1{color:var(--rank1);}
+.pos-2{color:var(--rank2);}
+.pos-3{color:var(--rank3);}
+.pos-other{color:var(--mist);}
+
+.country-cell{display:flex;align-items:center;gap:10px;}
+.flag-emoji{font-size:22px;line-height:1;}
+.country-name{font-weight:600;font-size:14px;color:var(--white);}
+.country-conf{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:var(--mist);margin-top:1px;}
+
+.score-bar-wrap{display:flex;align-items:center;gap:10px;min-width:130px;}
+.score-bar-track{flex:1;height:6px;background:rgba(255,255,255,.08);border-radius:3px;overflow:hidden;}
+.score-bar-fill{height:100%;border-radius:3px;transition:width .4s ease;}
+.score-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:600;white-space:nowrap;min-width:36px;}
+
+.tier-badge{
+  font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;
+  padding:3px 9px;border-radius:3px;white-space:nowrap;
+}
+.tier-S{background:rgba(252,211,77,.15);color:var(--gold);border:1px solid rgba(252,211,77,.3);}
+.tier-A{background:rgba(74,222,128,.12);color:var(--lime);border:1px solid rgba(74,222,128,.25);}
+.tier-B{background:rgba(96,165,250,.12);color:var(--blue);border:1px solid rgba(96,165,250,.25);}
+.tier-C{background:rgba(148,163,184,.08);color:var(--mist);border:1px solid rgba(148,163,184,.2);}
+.tier-D{background:rgba(248,113,113,.08);color:var(--red);border:1px solid rgba(248,113,113,.2);}
+
+/* mini scores */
+.mini-scores{display:flex;gap:6px;flex-wrap:wrap;}
+.mini-score{
+  font-family:'JetBrains Mono',monospace;font-size:9.5px;padding:2px 7px;border-radius:2px;
+  background:rgba(255,255,255,.05);border:1px solid var(--border);color:var(--mist);
+  white-space:nowrap;
+}
+
+/* ── COUNTRY DETAIL MODAL ── */
+#modal-overlay{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:rgba(8,24,10,.88);align-items:center;justify-content:center;padding:20px;
+}
+#modal-overlay.open{display:flex;}
+.modal{
+  background:#0D2B10;border:1px solid rgba(74,222,128,.3);border-radius:8px;
+  max-width:680px;width:100%;max-height:88vh;overflow-y:auto;position:relative;
+}
+.modal-header{
+  background:rgba(74,222,128,.07);padding:24px 28px 20px;
+  border-bottom:1px solid rgba(74,222,128,.15);
+}
+.modal-flag{font-size:52px;line-height:1;margin-bottom:8px;}
+.modal-country{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:1px;color:var(--white);}
+.modal-conf{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--lime);margin-top:2px;}
+.modal-rank{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--gold);margin-top:4px;}
+.modal-body{padding:24px 28px;}
+.modal-score-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.modal-score-card{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;padding:14px 16px;}
+.msc-label{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-bottom:4px;}
+.msc-score{font-family:'Bebas Neue',sans-serif;font-size:32px;line-height:1;}
+.msc-bar{margin-top:8px;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+.msc-bar-fill{height:100%;border-radius:2px;}
+.modal-facts{margin-top:4px;}
+.modal-facts h4{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--lime);margin-bottom:12px;}
+.fact-item{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px;line-height:1.5;color:rgba(248,250,252,.8);}
+.fact-item:last-child{border-bottom:none;}
+.fact-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
+.modal-close{
+  position:absolute;top:14px;right:16px;
+  background:transparent;border:1px solid var(--border);color:var(--mist);
+  font-family:'JetBrains Mono',monospace;font-size:11px;padding:5px 10px;border-radius:3px;cursor:pointer;
+  transition:all .15s;
+}
+.modal-close:hover{border-color:var(--red);color:var(--red);}
+
+/* ── TRIVIA PANEL ── */
+.trivia-setup{text-align:center;padding:40px 20px;}
+.trivia-setup h2{font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--lime);letter-spacing:2px;margin-bottom:8px;}
+.trivia-setup p{color:var(--mist);font-size:14px;margin-bottom:28px;}
+.mode-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:28px;}
+.mode-card{
+  background:var(--card);border:2px solid var(--border);border-radius:6px;padding:20px;
+  cursor:pointer;transition:all .2s;text-align:left;
+}
+.mode-card:hover,.mode-card.selected{border-color:var(--lime);background:rgba(74,222,128,.07);}
+.mc-icon{font-size:28px;margin-bottom:8px;}
+.mc-title{font-weight:600;font-size:15px;color:var(--white);margin-bottom:4px;}
+.mc-desc{font-size:12.5px;color:var(--mist);line-height:1.5;}
+.btn-start{
+  font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;
+  background:var(--lime);color:var(--pitch);border:none;padding:14px 48px;
+  border-radius:4px;cursor:pointer;transition:opacity .15s;
+}
+.btn-start:hover{opacity:.88;}
+.btn-start:disabled{opacity:.3;cursor:not-allowed;}
+
+/* trivia game */
+.trivia-game{display:none;}
+.tg-progress{
+  background:rgba(255,255,255,.04);border-radius:4px;padding:14px 20px;
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;flex-wrap:wrap;gap:10px;
+}
+.tg-qnum{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--mist);}
+.tg-score-display{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--gold);letter-spacing:1px;}
+.tg-track{flex:1;min-width:100px;height:4px;background:rgba(255,255,255,.08);border-radius:2px;overflow:hidden;}
+.tg-fill{height:100%;background:var(--lime);border-radius:2px;transition:width .3s;}
+.question-card{
+  background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:6px;
+  padding:28px;margin-bottom:16px;
+}
+.q-category{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--lime);margin-bottom:10px;}
+.q-text{font-size:17px;font-weight:600;color:var(--white);line-height:1.5;margin-bottom:20px;}
+.q-hint{font-size:13px;color:var(--mist);font-style:italic;margin-bottom:20px;}
+.options-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+@media(max-width:500px){.options-grid{grid-template-columns:1fr;}}
+.option-btn{
+  background:rgba(255,255,255,.04);border:1.5px solid var(--border);border-radius:4px;
+  color:var(--white);font-size:13.5px;padding:14px 16px;cursor:pointer;
+  transition:all .2s;text-align:left;line-height:1.4;
+}
+.option-btn:hover:not([disabled]){border-color:var(--lime);background:rgba(74,222,128,.08);}
+.option-btn.correct{background:rgba(74,222,128,.2);border-color:var(--lime);color:var(--lime);}
+.option-btn.wrong{background:rgba(248,113,113,.15);border-color:var(--red);color:var(--red);}
+.option-btn[disabled]{cursor:default;}
+
+.q-explanation{
+  background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.2);
+  border-left:4px solid var(--blue);border-radius:4px;padding:14px 18px;margin-top:12px;
+  font-size:13px;color:rgba(248,250,252,.8);line-height:1.65;display:none;
+}
+.q-explanation.show{display:block;}
+.q-explanation strong{color:var(--blue);}
+.q-explanation .is-link{font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--lime);background:rgba(74,222,128,.1);padding:1px 6px;border-radius:2px;}
+
+.btn-next{
+  font-family:'JetBrains Mono',monospace;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;
+  background:var(--lime);color:var(--pitch);border:none;padding:11px 26px;border-radius:4px;
+  cursor:pointer;margin-top:12px;display:none;transition:opacity .15s;font-weight:600;
+}
+.btn-next.show{display:inline-block;}
+.btn-next:hover{opacity:.88;}
+
+/* results */
+.trivia-result{display:none;text-align:center;padding:40px 20px;}
+.result-emoji{font-size:64px;margin-bottom:12px;}
+.result-title{font-family:'Bebas Neue',sans-serif;font-size:52px;color:var(--lime);letter-spacing:2px;margin-bottom:6px;}
+.result-score{font-family:'Bebas Neue',sans-serif;font-size:38px;color:var(--gold);}
+.result-msg{font-size:15px;color:var(--mist);margin:12px 0 28px;max-width:420px;margin-left:auto;margin-right:auto;}
+.result-breakdown{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;max-width:500px;margin:0 auto 28px;}
+.rb-cell{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:14px;text-align:center;}
+.rb-num{font-family:'Bebas Neue',sans-serif;font-size:28px;color:var(--white);}
+.rb-lbl{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mist);margin-top:2px;}
+.btn-retry{
+  font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:2px;
+  background:transparent;color:var(--lime);border:2px solid var(--lime);
+  padding:11px 36px;border-radius:4px;cursor:pointer;transition:all .2s;
+}
+.btn-retry:hover{background:rgba(74,222,128,.12);}
+
+/* ── INDICATOR QUIZ PANEL ── */
+.iq-intro{
+  background:rgba(252,211,77,.05);border:1px solid rgba(252,211,77,.2);
+  border-left:4px solid var(--gold);border-radius:6px;padding:20px 26px;margin-bottom:28px;
+}
+.iq-intro h3{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);margin-bottom:8px;letter-spacing:1px;}
+.iq-intro p{font-size:13.5px;color:rgba(248,250,252,.75);line-height:1.7;}
+
+.iq-list{display:flex;flex-direction:column;gap:20px;}
+.iq-card{
+  background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:6px;
+  padding:22px 26px;transition:border-color .2s;
+}
+.iq-card.answered-correct{border-color:rgba(74,222,128,.4);}
+.iq-card.answered-wrong{border-color:rgba(248,113,113,.3);}
+.iq-qnum{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+.iq-q{font-size:15.5px;font-weight:600;color:var(--white);line-height:1.5;margin-bottom:6px;}
+.iq-context{font-size:12.5px;color:var(--mist);font-style:italic;margin-bottom:16px;line-height:1.5;}
+.iq-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+@media(max-width:540px){.iq-opts{grid-template-columns:1fr;}}
+.iq-opt{
+  background:rgba(255,255,255,.04);border:1.5px solid var(--border);border-radius:4px;
+  color:var(--white);font-size:13px;padding:11px 14px;cursor:pointer;
+  transition:all .2s;text-align:left;line-height:1.4;
+}
+.iq-opt:hover:not([disabled]){border-color:var(--gold);background:rgba(252,211,77,.07);}
+.iq-opt.iq-correct{background:rgba(74,222,128,.15);border-color:var(--lime);color:var(--lime);}
+.iq-opt.iq-wrong{background:rgba(248,113,113,.12);border-color:var(--red);color:var(--red);}
+.iq-opt[disabled]{cursor:default;}
+.iq-opt.iq-locked:not(.iq-correct):not(.iq-wrong){opacity:.4;}
+.iq-reveal{
+  display:none;background:rgba(96,165,250,.07);border:1px solid rgba(96,165,250,.18);
+  border-left:4px solid var(--blue);border-radius:4px;padding:14px 18px;
+  font-size:13px;color:rgba(248,250,252,.82);line-height:1.7;margin-top:4px;
+}
+.iq-reveal.show{display:block;}
+.iq-reveal strong{color:var(--blue);}
+.iq-reveal em{color:var(--lime2);font-style:normal;}
+
+.iq-summary{
+  display:none;background:rgba(74,222,128,.05);border:1px solid rgba(74,222,128,.2);
+  border-radius:6px;padding:28px;text-align:center;margin-top:28px;
+}
+.iq-summary.show{display:block;}
+.iq-summary h3{font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--lime);letter-spacing:1px;margin-bottom:4px;}
+.iq-summary-sub{font-size:14px;color:var(--mist);margin-bottom:20px;}
+.iq-bars{display:grid;grid-template-columns:repeat(auto-fit,minmax(100px,1fr));gap:10px;margin-bottom:20px;}
+.iq-bar-cell{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:4px;padding:14px 10px;text-align:center;}
+.iq-bar-n{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--gold);}
+.iq-bar-l{font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--mist);margin-top:2px;}
+.iq-reset-btn{
+  font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;
+  font-weight:600;background:transparent;color:var(--lime);border:1.5px solid var(--lime);
+  padding:10px 28px;border-radius:4px;cursor:pointer;transition:all .2s;
+}
+.iq-reset-btn:hover{background:rgba(74,222,128,.1);}
+
+.concept-card{
+  background:var(--card);border:1px solid var(--border);border-radius:6px;padding:20px 22px;
+  border-top:3px solid var(--lime);
+}
+.cc-icon{font-size:26px;margin-bottom:8px;}
+.cc-title{font-family:'Bebas Neue',sans-serif;font-size:20px;letter-spacing:.5px;color:var(--white);margin-bottom:6px;}
+.cc-def{font-size:13px;color:rgba(248,250,252,.75);line-height:1.65;margin-bottom:10px;}
+.cc-wc-link{font-size:12.5px;color:var(--lime2);font-style:italic;padding-top:8px;border-top:1px solid var(--border);}
+
+/* responsive tweaks */
+@media(max-width:640px){
+  .modal-score-grid{grid-template-columns:1fr;}
+  table.rank-table td:nth-child(4),table.rank-table td:nth-child(5){display:none;}
+  table.rank-table th:nth-child(4),table.rank-table th:nth-child(5){display:none;}
+}
+</style>
+</head>
+<body>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-pill">IS Management · ULACIT · 13-0078 · World Cup 2026</div>
+  <h1>Digital <em>Nations</em><br>Ranking</h1>
+  <p class="hero-sub">Which countries are leading the digital era — and why? Use the ranking to explore, then discuss what it means for competitiveness, adoption, and the future.</p>
+  <div class="hero-stats">
+    <div class="hs-item"><div class="hs-n">48</div><div class="hs-l">Countries ranked</div></div>
+    <div class="hs-item"><div class="hs-n">6</div><div class="hs-l">IS dimensions</div></div>
+    <div class="hs-item"><div class="hs-n">14</div><div class="hs-l">Discussion questions</div></div>
+    <div class="hs-item"><div class="hs-n">6</div><div class="hs-l">IS concepts</div></div>
+  </div>
+</div>
+
+<!-- TABS -->
+<div class="tabs-wrap">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('ranking')">🏆 Full Ranking</button>
+    <button class="tab-btn" onclick="switchTab('trivia')">💬 Discussion</button>
+    <button class="tab-btn" onclick="switchTab('concepts')">🌐 IS Concepts</button>
+    <button class="tab-btn" onclick="switchTab('indicators')">📊 DII Framework</button>
+    <button class="tab-btn" onclick="switchTab('quiz')">⚡ Quick Trivia</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ═══ RANKING PANEL ═══ -->
+<div class="panel active" id="panel-ranking">
+
+  <div class="index-box">
+    <h3>The Digital Inclusion Index (DII) — How We Scored 48 Nations</h3>
+    <p style="font-size:13px;color:rgba(248,250,252,.7);line-height:1.65;">Each country is scored 0–100 across 6 dimensions drawn from sources including the ITU Global ICT Development Index, IMD World Digital Competitiveness, Oxford Insights AI Readiness Index, World Bank Digital Development data, and UNCTAD B2C E-commerce Index (2023–2025 data). <strong style="color:var(--lime2);">Click any row to explore a country's full digital profile.</strong></p>
+    <div class="index-criteria">
+      <div class="crit-pill"><div class="cp-label">Dimension 1 · 20%</div><div class="cp-name">Internet Infrastructure</div><div class="cp-weight">Penetration, speed, 5G coverage</div></div>
+      <div class="crit-pill"><div class="cp-label">Dimension 2 · 20%</div><div class="cp-name">AI Readiness</div><div class="cp-weight">Gov strategy, talent, investment</div></div>
+      <div class="crit-pill"><div class="cp-label">Dimension 3 · 15%</div><div class="cp-name">Digital Government / IS</div><div class="cp-weight">E-gov index, open data, public IS</div></div>
+      <div class="crit-pill"><div class="cp-label">Dimension 4 · 20%</div><div class="cp-name">E-Commerce & Fintech</div><div class="cp-weight">Digital payments, B2C e-comm</div></div>
+      <div class="crit-pill"><div class="cp-label">Dimension 5 · 15%</div><div class="cp-name">Cybersecurity Maturity</div><div class="cp-weight">GCI score, CERT capacity</div></div>
+      <div class="crit-pill"><div class="cp-label">Dimension 6 · 10%</div><div class="cp-name">Digital Skills & Education</div><div class="cp-weight">ICT graduates, digital literacy</div></div>
+    </div>
+  </div>
+
+  <div class="rank-controls">
+    <input class="search-box" type="text" id="search-input" placeholder="Search country..." oninput="filterTable()">
+    <button class="filter-btn active" onclick="filterConf('ALL',this)">All</button>
+    <button class="filter-btn" onclick="filterConf('UEFA',this)">🇪🇺 Europe</button>
+    <button class="filter-btn" onclick="filterConf('CONMEBOL',this)">🌎 S. America</button>
+    <button class="filter-btn" onclick="filterConf('AFC',this)">🌏 Asia</button>
+    <button class="filter-btn" onclick="filterConf('CAF',this)">🌍 Africa</button>
+    <button class="filter-btn" onclick="filterConf('CONCACAF',this)">🌐 CONCACAF</button>
+  </div>
+
+  <div class="rank-table-wrap">
+  <table class="rank-table" id="rank-table">
+    <thead>
+      <tr>
+        <th onclick="sortTable(0)">#</th>
+        <th onclick="sortTable(1)">Country</th>
+        <th onclick="sortTable(2)">DII Score</th>
+        <th onclick="sortTable(3)">Tier</th>
+        <th onclick="sortTable(4)">Internet</th>
+        <th onclick="sortTable(5)">AI</th>
+        <th onclick="sortTable(6)">E-Gov</th>
+        <th onclick="sortTable(7)">E-Comm</th>
+        <th onclick="sortTable(8)">Cyber</th>
+        <th onclick="sortTable(9)">Skills</th>
+      </tr>
+    </thead>
+    <tbody id="rank-body"></tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ═══ TRIVIA PANEL ═══ -->
+<div class="panel" id="panel-trivia">
+  <div class="trivia-setup" id="trivia-setup">
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:var(--lime);letter-spacing:2px;margin-bottom:8px;">💬 Discussion Game</h2>
+    <p style="color:var(--mist);font-size:14px;margin-bottom:28px;max-width:520px;margin-left:auto;margin-right:auto;line-height:1.65;">No score memorization needed. These questions ask you to <strong style="color:var(--white);">reason, debate, and decide</strong> — the right answer is the one with the best argument behind it.</p>
+    <div class="mode-grid">
+      <div class="mode-card selected" onclick="selectMode('surprising')" id="mode-surprising">
+        <div class="mc-icon">💡</div>
+        <div class="mc-title">Surprising Leaders</div>
+        <div class="mc-desc">Countries doing better than expected — what does that tell us about how IS actually works?</div>
+      </div>
+      <div class="mode-card" onclick="selectMode('means')" id="mode-means">
+        <div class="mc-icon">🤔</div>
+        <div class="mc-title">What Does This Mean?</div>
+        <div class="mc-desc">Real IS decisions from real countries — what happened, why, and what's the lesson?</div>
+      </div>
+      <div class="mode-card" onclick="selectMode('decide')" id="mode-decide">
+        <div class="mc-icon">🗳️</div>
+        <div class="mc-title">You Decide</div>
+        <div class="mc-desc">You're the manager, the CIO, the government. What would you do — and why does it matter?</div>
+      </div>
+    </div>
+    <button class="btn-start" id="btn-start" onclick="startTrivia()">Start Game →</button>
+  </div>
+
+  <div class="trivia-game" id="trivia-game">
+    <div class="tg-progress">
+      <div class="tg-qnum" id="tg-qnum">Question 1 of 10</div>
+      <div class="tg-track"><div class="tg-fill" id="tg-fill" style="width:10%"></div></div>
+      <div class="tg-score-display">Score: <span id="tg-score">0</span></div>
+    </div>
+    <div class="question-card" id="question-card">
+      <div class="q-category" id="q-category"></div>
+      <div class="q-text" id="q-text"></div>
+      <div class="q-hint" id="q-hint"></div>
+      <div class="options-grid" id="options-grid"></div>
+      <div class="q-explanation" id="q-explanation"></div>
+      <button class="btn-next" id="btn-next" onclick="nextQuestion()">Next Question →</button>
+    </div>
+  </div>
+
+  <div class="trivia-result" id="trivia-result">
+    <div class="result-emoji" id="result-emoji"></div>
+    <div class="result-title" id="result-title"></div>
+    <div class="result-score" id="result-score-display"></div>
+    <div class="result-msg" id="result-msg"></div>
+    <div class="result-breakdown">
+      <div class="rb-cell"><div class="rb-num" id="rb-correct">0</div><div class="rb-lbl">Correct</div></div>
+      <div class="rb-cell"><div class="rb-num" id="rb-wrong">0</div><div class="rb-lbl">Wrong</div></div>
+      <div class="rb-cell"><div class="rb-num" id="rb-pct">0%</div><div class="rb-lbl">Accuracy</div></div>
+    </div>
+    <button class="btn-retry" onclick="resetTrivia()">Play Again</button>
+  </div>
+</div>
+
+<!-- ═══ CONCEPTS PANEL ═══ -->
+<div class="panel" id="panel-concepts">
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;color:var(--lime);margin-bottom:6px;">IS Concepts — Through the Lens of 48 Nations</h2>
+    <p style="font-size:14px;color:var(--mist);">Six ideas that explain why some countries lead digitally and others don't — and what it means for any organization trying to adopt IS.</p>
+  <div class="concept-grid" id="concept-grid"></div>
+
+  <!-- SOURCES -->
+  <div style="margin-top:48px;padding-top:32px;border-top:1px solid var(--border);">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px;">📚 Data Sources & Methodology</div>
+    <p style="font-size:13px;color:var(--mist);line-height:1.75;max-width:780px;margin-bottom:20px;">The Digital Inclusion Index (DII) is a composite index created for educational purposes for IS Management (13-0078), ULACIT. Scores for each dimension were derived and normalized (0–100) from the following public data sources, using 2023–2025 data where available. The index is not an official publication and should be interpreted as a pedagogical tool, not a definitive national ranking.</p>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;">
+      <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;padding:14px 16px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--lime);margin-bottom:8px;">Internet Infrastructure (20%)</div>
+        <div style="font-size:12.5px;color:rgba(248,250,252,.7);line-height:1.65;">
+          • ITU Global ICT Development Index 2024<br>
+          • Ookla 5G Global Index (Q3 2024)<br>
+          • World Bank Digital Development Data<br>
+          • Speedtest Global Index (Ookla, 2024)
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;padding:14px 16px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--lime);margin-bottom:8px;">AI Readiness (20%)</div>
+        <div style="font-size:12.5px;color:rgba(248,250,252,.7);line-height:1.65;">
+          • Oxford Insights AI Readiness Index 2023<br>
+          • Stanford AI Index Report 2024<br>
+          • IMD World Digital Competitiveness 2024<br>
+          • Government AI Strategy publications (national sources)
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;padding:14px 16px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--lime);margin-bottom:8px;">Digital Government IS (15%)</div>
+        <div style="font-size:12.5px;color:rgba(248,250,252,.7);line-height:1.65;">
+          • UN E-Government Survey 2024<br>
+          • World Bank GovTech Maturity Index 2022<br>
+          • OECD Digital Government Index 2023<br>
+          • National digital government reports
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;padding:14px 16px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--lime);margin-bottom:8px;">E-Commerce & Fintech (20%)</div>
+        <div style="font-size:12.5px;color:rgba(248,250,252,.7);line-height:1.65;">
+          • UNCTAD B2C E-commerce Index 2024<br>
+          • World Bank Global Findex Database 2022<br>
+          • GSMA Mobile Economy Reports 2024<br>
+          • Statista Digital Market Outlook 2024
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;padding:14px 16px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--lime);margin-bottom:8px;">Cybersecurity Maturity (15%)</div>
+        <div style="font-size:12.5px;color:rgba(248,250,252,.7);line-height:1.65;">
+          • ITU Global Cybersecurity Index (GCI) 2024<br>
+          • National Cyber Power Index (Harvard Belfer Center) 2022<br>
+          • ENISA Threat Landscape Reports<br>
+          • National CERT capacity assessments
+        </div>
+      </div>
+      <div style="background:rgba(255,255,255,.03);border:1px solid var(--border);border-radius:4px;padding:14px 16px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--lime);margin-bottom:8px;">Digital Skills & Education (10%)</div>
+        <div style="font-size:12.5px;color:rgba(248,250,252,.7);line-height:1.65;">
+          • World Economic Forum Future of Jobs Report 2023<br>
+          • UNESCO ICT in Education Statistics 2023<br>
+          • EU Digital Economy and Society Index (DESI) 2023<br>
+          • GSMA Connected Women & Digital Skills Reports
+        </div>
+      </div>
+    </div>
+    <div style="margin-top:20px;background:rgba(252,211,77,.05);border:1px solid rgba(252,211,77,.2);border-left:4px solid var(--gold);border-radius:4px;padding:14px 18px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;">World Cup Qualification Data</div>
+      <div style="font-size:12.5px;color:rgba(248,250,252,.7);line-height:1.65;">
+        FIFA.com Official Qualification Results (2025–2026) · UEFA European Qualifiers (March 2026) · ESPN 2026 World Cup Qualification Tracker · NBC Sports Intercontinental Playoffs Coverage · Iraq confirmed as 48th qualifier (March 31, 2026) · DR Congo confirmed 47th qualifier (March 31, 2026). <strong style="color:var(--gold2);">Note:</strong> Nigeria appears in some questions as an IS case study — it did not qualify for the 2026 World Cup.
+      </div>
+    </div>
+    <div style="margin-top:12px;font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--mist);line-height:1.7;">
+      Created for IS Management (Code 13-0078) · ULACIT — Latin American University of Science and Technology · Academic Year 2026 · Scores are composite estimates for educational use only. For official national digital development data, refer to the primary sources listed above.
+    </div>
+  </div>
+
+</div>
+
+<!-- ═══ INDICATORS PANEL ═══ -->
+<div class="panel" id="panel-indicators">
+
+  <div style="margin-bottom:28px;">
+    <h2 style="font-family:'Bebas Neue',sans-serif;font-size:36px;letter-spacing:1px;color:var(--gold);margin-bottom:8px;">📊 The Digital Inclusion Index — Framework & Dimensions</h2>
+    <p style="font-size:14px;color:var(--mist);max-width:700px;line-height:1.7;">The DII is built from six dimensions. Each one measures a different kind of IS capacity. Below you will find what each dimension captures, what data it draws from, and — critically — what it <em style="color:var(--white);">does not</em> measure. Reading the dimensions individually matters more than the composite score.</p>
+  </div>
+
+  <div style="background:rgba(252,211,77,.05);border:1px solid rgba(252,211,77,.2);border-left:4px solid var(--gold);border-radius:6px;padding:18px 24px;margin-bottom:28px;">
+    <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;">How the Composite Score Works</div>
+    <p style="font-size:13px;color:rgba(248,250,252,.75);line-height:1.75;margin-bottom:14px;">Each dimension is scored 0–100 from its source data and multiplied by its weight. The six weighted scores are summed to produce the DII (also 0–100). A country that scores 70 overall may score 90 in connectivity but 40 in digital skills — the composite hides these internal gaps. Always read the individual dimensions.</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 11px;background:rgba(74,222,128,.1);border:1px solid rgba(74,222,128,.25);border-radius:3px;color:#4ADE80;">Internet · 20%</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 11px;background:rgba(252,211,77,.1);border:1px solid rgba(252,211,77,.25);border-radius:3px;color:#FCD34D;">AI Readiness · 20%</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 11px;background:rgba(96,165,250,.1);border:1px solid rgba(96,165,250,.25);border-radius:3px;color:#60A5FA;">Digital Gov · 15%</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 11px;background:rgba(244,114,182,.1);border:1px solid rgba(244,114,182,.25);border-radius:3px;color:#F472B6;">E-Commerce · 20%</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 11px;background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.25);border-radius:3px;color:#FB923C;">Cybersecurity · 15%</span>
+      <span style="font-family:'JetBrains Mono',monospace;font-size:10px;padding:4px 11px;background:rgba(167,139,250,.1);border:1px solid rgba(167,139,250,.25);border-radius:3px;color:#A78BFA;">Digital Skills · 10%</span>
+    </div>
+  </div>
+
+  <div id="dim-cards" style="display:flex;flex-direction:column;gap:20px;"></div>
+
+</div>
+
+
+<!-- ═══ QUICK TRIVIA PANEL ═══ -->
+<div class="panel" id="panel-quiz">
+
+  <div class="trivia-setup" id="quiz-setup">
+    <h2>⚡ Quick Trivia</h2>
+    <p>One correct answer. Fast rounds. Test what you know about IS adoption, digital leaders, and what makes countries competitive in the digital era.</p>
+    <div class="mode-grid">
+      <div class="mode-card selected" onclick="selectQMode('adoption')" id="qmode-adoption">
+        <div class="mc-icon">🌐</div>
+        <div class="mc-title">Digital Adoption</div>
+        <div class="mc-desc">Why do some countries and companies adopt IS faster — and what stops others?</div>
+      </div>
+      <div class="mode-card" onclick="selectQMode('leaders')" id="qmode-leaders">
+        <div class="mc-icon">🏅</div>
+        <div class="mc-title">Digital Leaders</div>
+        <div class="mc-desc">Which countries lead in AI, e-government, fintech, and connectivity — and why?</div>
+      </div>
+      <div class="mode-card" onclick="selectQMode('mixed')" id="qmode-mixed">
+        <div class="mc-icon">🎲</div>
+        <div class="mc-title">Mixed</div>
+        <div class="mc-desc">All topics shuffled. Best for a full class warm-up round.</div>
+      </div>
+    </div>
+    <button class="btn-start" onclick="startQuiz()">Start ⚡</button>
+  </div>
+
+  <div class="trivia-game" id="quiz-game">
+    <div class="tg-progress">
+      <div class="tg-qnum" id="quiz-qnum">Question 1 of 8</div>
+      <div class="tg-track"><div class="tg-fill" id="quiz-fill" style="width:12.5%"></div></div>
+      <div class="tg-score-display">Score: <span id="quiz-score">0</span></div>
+    </div>
+    <div class="question-card">
+      <div class="q-category" id="quiz-cat"></div>
+      <div class="q-text" id="quiz-text"></div>
+      <div class="q-hint" id="quiz-hint"></div>
+      <div class="options-grid" id="quiz-opts"></div>
+      <div class="q-explanation" id="quiz-exp"></div>
+      <button class="btn-next" id="quiz-next" onclick="nextQuizQ()">Next →</button>
+    </div>
+  </div>
+
+  <div class="trivia-result" id="quiz-result">
+    <div class="result-emoji" id="quiz-emoji"></div>
+    <div class="result-title" id="quiz-title"></div>
+    <div class="result-score" id="quiz-score-final"></div>
+    <div class="result-msg" id="quiz-msg"></div>
+    <div class="result-breakdown">
+      <div class="rb-cell"><div class="rb-num" id="quiz-rb-correct">0</div><div class="rb-lbl">Correct</div></div>
+      <div class="rb-cell"><div class="rb-num" id="quiz-rb-wrong">0</div><div class="rb-lbl">Wrong</div></div>
+      <div class="rb-cell"><div class="rb-num" id="quiz-rb-pct">0%</div><div class="rb-lbl">Accuracy</div></div>
+    </div>
+    <button class="btn-retry" onclick="resetQuiz()">Play Again</button>
+  </div>
+
+</div>
+
+</div><!-- /main -->
+
+<!-- MODAL -->
+<div id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" onclick="closeModalDirect()">✕ Close</button>
+    <div class="modal-header">
+      <div class="modal-flag" id="modal-flag"></div>
+      <div class="modal-country" id="modal-country"></div>
+      <div class="modal-conf" id="modal-conf"></div>
+      <div class="modal-rank" id="modal-rank"></div>
+    </div>
+    <div class="modal-body">
+      <div class="modal-score-grid" id="modal-score-grid"></div>
+      <div class="modal-facts">
+        <h4>Key Digital Facts</h4>
+        <div id="modal-facts-list"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+// DATA — 48 World Cup 2026 Countries with DII scores
+// Sources: ITU 2024, IMD Digital 2024, Oxford AI 2023,
+//          World Bank, UNCTAD 2024, GCI 2024
+// Scores 0–100 per dimension; DII = weighted composite
+// ═══════════════════════════════════════════════════════
+const COUNTRIES = [
+  // [name, flag, conf, internet, ai, egov, ecomm, cyber, skills, facts[]]
+  ["United States","🇺🇸","CONCACAF",92,96,88,95,91,94,["Home of AWS, Google, Microsoft — the world's dominant cloud IS providers","95% broadband penetration; 5G covers 96% of population","Oxford AI Readiness Index: #1 globally in AI research output","Digital economy = 10.9% of GDP; e-commerce surpassed $1.1T in 2023","CISA (Cybersecurity IS Agency) is the global model for national cyber defense"]],
+  ["Germany","🇩🇪","UEFA",90,88,85,88,92,91,["Industry 4.0 pioneer: factories run on IS-integrated IoT systems","Home of SAP — the world's largest enterprise IS (ERP) vendor","5G rollout reaching 90%+ coverage; Deutsche Telekom leads","E-government lag: ranked #13 EU, behind smaller nations","Cyber: BSI (Federal Cyber Office) rates among top 5 globally"]],
+  ["Netherlands","🇳🇱","UEFA",97,90,92,91,93,93,["#1 internet speed in Europe; 99.8% household internet access","Amsterdam Internet Exchange (AMS-IX) = Europe's data hub","E-gov: top 5 UN e-government index; fully digital civil registry","Fintech: ING and Adyen lead European digital payment IS","Oxford AI: #6 globally; strong university-to-startup IS pipeline"]],
+  ["South Korea","🇰🇷","AFC",97,87,94,89,90,88,["World's fastest average internet (avg 200+ Mbps) and 5G leader","E-government: UN #1 ranked for 10+ years; full digital public services","Kakao and Naver: national IS ecosystems replacing Google/Meta locally","AI: government invested $2B in national AI IS strategy (2023–2027)","Cybersecurity: one of the most cyber-attacked nations; world-class CERT"]],
+  ["Japan","🇯🇵","AFC",93,85,87,90,88,87,["Robotics IS integration in manufacturing is globally unmatched","SoftBank and NTT lead 5G; rural coverage still a gap","E-gov: launched Digital Agency (2021) after notorious paper-based failures","E-commerce: $172B market; LINE Pay dominates mobile payments","Oxford AI: #4 globally; major corporate AI IS R&D (Toyota, Sony, Hitachi)"]],
+  ["Australia","🇦🇺","AFC",88,84,86,83,86,85,["National Broadband Network (NBN): AU$51B IS investment — mixed results","Oxford AI: top 10; strong federal AI ethics framework (2021)","E-gov: myGov IS consolidates 40+ federal services in one platform","Fintech: leading BNPL market (Afterpay/Zip); digital payments dominant","Cyber: ACSC ranked #8 globally; mandatory breach notification IS law"]],
+  ["France","🇫🇷","UEFA",89,85,86,87,87,86,["French Tech ecosystem: 25+ unicorns; €30B public digital investment (2030 plan)","5G: 75% coverage; Orange leads national IS infrastructure","E-gov: France Connect digital ID used by 40M+ citizens","AI: National AI Strategy — €1.5B investment, targeting sovereign AI IS","Cyber: ANSSI is EU's most respected national cybersecurity IS agency"]],
+  ["England","🏴󠁧󠁢󠁥󠁮󠁧󠁿","UEFA",90,87,87,88,88,88,["London is Europe's #1 fintech hub — over 2,500 fintech companies","Oxford AI: #2 globally behind USA; DeepMind (Google London) based here","NHS Digital: world's largest single-payer health IS — 65M patient records","5G: 85%+ coverage; BT and Virgin Media lead IS infrastructure","Gov Digital Service (GDS): pioneered government-as-a-platform IS model"]],
+  ["Spain","🇪🇸","UEFA",88,83,85,84,85,83,["Digital Kit program: €3B for SME IS digitalization — 1.2M companies aided","Barcelona Smart City: leading global model for urban IS integration","AI Spain 2025: national strategy with €600M+ investment","E-commerce: Inditex (Zara) is global leader in omnichannel retail IS","Cyber: INCIBE handles 100,000+ incidents/year; strong IS capacity"]],
+  ["Switzerland","🇨🇭","UEFA",94,89,90,90,91,90,["IMD Digital Competitiveness: #3 globally (2024)","Home of WEF (Davos) — global IS governance conversations happen here","Geneva: HQ of ITU, the UN agency that governs global IS standards","Fintech: Zug 'Crypto Valley' — global blockchain IS hub","E-gov: federal IS architecture model studied worldwide"]],
+  ["Norway","🇳🇴","UEFA",96,86,91,88,89,90,["#1 digital public services in Europe — 99% tax returns filed digitally","Altinn: national IS platform used by all businesses for regulatory compliance","Oil sector fully IS-integrated: Equinor uses AI IS for offshore drilling","5G: nationwide coverage; Telenor leads Nordic IS infrastructure","Oxford AI: top 15; sovereign wealth fund investing heavily in tech IS"]],
+  ["Portugal","🇵🇹","UEFA",85,79,83,80,82,80,["Websummit HQ: Lisbon is Southern Europe's leading IS startup hub","5G: 70% coverage; MEO and NOS compete on IS infrastructure","E-gov: Simplex program digitized 1,600+ public services","AI: €500M strategy; strong in NLP research (IST Lisbon)","Cyber: CNCS national IS — improving but below EU average"]],
+  ["Croatia","🇭🇷","UEFA",80,71,78,72,76,73,["Infobip: Croatian unicorn — global SMS and messaging IS platform","5G launched 2021; coverage still limited to urban centers","E-gov: e-Citizens IS portal covers 97 digital public services","Fintech: emerging market; Kuna→Euro switch accelerated IS adoption","Cyber: CERT Croatia active since 2008; below EU average maturity"]],
+  ["Belgium","🇧🇪","UEFA",88,84,84,84,85,83,["HQ of NATO's cyber operations and EU digital policy institutions","SWIFT HQ in Brussels — the world's core financial messaging IS","E-gov: Itsme digital ID used by 7M+ Belgians — EU model","Fintech: Mastercard European HQ; Bancontact dominant payments IS","Oxford AI: #12 globally; KU Leuven leads AI IS research"]],
+  ["Austria","🇦🇹","UEFA",87,82,85,83,84,83,["E-gov: #3 EU e-government services; ID Austria used by 4M+ citizens","Vienna is a European HQ hub for IS companies (Red Bull, Erste Bank)","5G: A1 Telekom leads; 80%+ coverage with fast urban rollout","Fintech: George platform (Erste) — leading European banking IS","Cyber: CERT.at among top 5 EU national cybersecurity IS centers"]],
+  ["Sweden","🇸🇪","UEFA",92,88,89,89,89,90,["Spotify, Klarna, iZettle — global IS companies from a 10M-person country","BankID: 8.5M users; most advanced national digital identity IS in world","5G: 90%+ coverage; Ericsson's 5G IS built here first","AI: Vinnova (innovation agency) invests $500M+/yr in AI IS R&D","Cyber: NCSC-SE; ranked #5 global cybersecurity IS maturity"]],
+  ["Czechia","🇨🇿","UEFA",82,75,79,76,78,77,["Strong engineering tradition: Avast (cybersecurity IS) founded here","E-gov: BankID.cz — banks as digital identity IS providers (unique model)","5G: T-Mobile CZ leads; 65% coverage with accelerating rollout","Fintech: homegrown IS startups growing fast post-EU funds infusion","Prague: growing IS startup scene rivaling Warsaw and Budapest"]],
+  ["Bosnia & Herzegovina","🇧🇦","UEFA",72,55,60,58,62,56,["Among lowest EU-adjacent digitalization scores; paper processes dominant","5G: limited; 4G coverage inconsistent outside Sarajevo","E-gov: fragmented between 3 administrative entities — IS coordination weak","Fintech: cash still dominant; digital payment IS adoption 30–35%","Oxford AI: minimal national strategy; talent brain drain ongoing"]],
+  ["Türkiye","🇹🇷","UEFA",79,70,72,71,70,68,["Emerging tech hub: Istanbul has 7 unicorns; IS investment growing","E-gov: e-Devlet IS portal: 60M+ users, one of the most-used in region","Fintech: Iyzico, PayTR leading local payments IS; crypto adoption high","5G: licensed 2023; rollout behind EU peers — coverage 40–50%","Cyber: BTK regulates IS; strong filtering infrastructure but lower open standards"]],
+  ["Argentina","🇦🇷","CONMEBOL",72,68,70,65,68,65,["Mercado Libre (MELI) — LatAm's largest e-commerce IS, founded in Buenos Aires","Strong tech talent: 120,000+ IT professionals; big export IS services sector","Fintech: Ualá, Naranja X disrupting banking IS for unbanked populations","5G: launched 2023; coverage limited to major cities","Economic instability impacts IS investment — significant infrastructure gaps"]],
+  ["Brazil","🇧🇷","CONMEBOL",78,72,73,76,71,70,["Nubank: world's largest digital bank by users (100M+) — global IS case study","Pix instant payment IS: 140M users in 3 years — fastest IS adoption globally","5G: 70%+ urban coverage; TIM, Vivo, Claro competing aggressively","AI: government AI plan; FAPESP funds strong university IS research","E-gov: Gov.br IS platform — 145M users; one of LatAm's best"]],
+  ["Colombia","🇨🇴","CONMEBOL",68,60,65,60,62,58,["Bogotá ranked #4 Latin American startup ecosystem for IS companies","Nequi and Daviplata: IS platforms banking 10M+ previously unbanked","5G: licensed 2023; coverage still in early deployment — mostly Bogotá","Oxford AI: national AI policy launched 2022; moderate implementation","Cyber: ColCERT improving; major ransomware incidents in 2022–2023"]],
+  ["Uruguay","🇺🇾","CONMEBOL",82,74,84,72,76,77,["UN e-gov index: #1 in LatAm for digital government IS","Ceibal Plan: 100% laptop/connectivity coverage for schoolchildren — IS model","OPP (public sector IS): real-time fiscal dashboards visible to all citizens","5G: Antel (state telco) plans rollout; 4G coverage 98% nationwide","Oxford AI: modest but coherent AI IS strategy; well above LatAm average"]],
+  ["Ecuador","🇪🇨","CONMEBOL",65,52,61,54,58,53,["5G: limited commercial deployment; Claro leads 4G but gaps in rural areas","Fintech: emerging; SRI (tax authority) runs one of LatAm's best tax IS","E-gov: Quipux document IS used across all ministries","Oxford AI: low AI readiness; university IS programs growing","Cyber: ECTRI improving; Ecuador experienced major data breach (2019, 20M records)"]],
+  ["Paraguay","🇵🇾","CONMEBOL",60,47,55,50,53,48,["E-gov: SÍ digital IS — improving but below LatAm average","Fintech: Tigo Money dominant mobile payments IS in rural areas","5G: not yet commercially deployed; Tigo and Claro on 4G","Oxford AI: limited national AI strategy; talent pipeline small","One of LatAm's lowest DII scores among World Cup nations"]],
+  ["Morocco","🇲🇦","CAF",66,58,68,60,64,58,["Africa's #2 IS hub after South Africa; Casablanca Finance City attracts IS firms","5G: launched 2023 (IAM); fastest 5G rollout in Africa","E-gov: iDaara IS digitizing 300+ administrative services","Oxford AI: national AI strategy 2030; highest AI readiness in Africa","Cyber: DGSSI ranks #2 Africa; hosted African Cybersecurity Forum 2023"]],
+  ["South Africa","🇿🇦","CAF",62,55,60,57,60,54,["Most advanced fintech market in Africa: Discovery, TymeBank, FNB digital","5G: Vodacom, MTN leading; urban 5G coverage 40%+","Johannesburg: Africa's largest data center market for IS infrastructure","Oxford AI: #1 AI readiness in Africa; UCT and Wits lead IS research","E-gov: GovChat IS — 10M+ interactions; still paper-heavy in rural areas"]],
+  ["DR Congo","🇨🇩","CAF",42,36,40,38,40,36,["Qualified via intercontinental playoff — beat Jamaica in the final to claim spot #47","Mobile money IS: M-Pesa and Airtel Money serve millions in a largely unbanked population","Internet penetration: ~25%; 4G coverage concentrated in Kinshasa and major cities","Oxford AI: no formal national AI strategy; university IS programs limited","One of Africa's largest populations (100M+) with one of the lowest digital inclusion scores — significant IS investment gap"]],
+  ["Iraq","🇮🇷","AFC",48,38,44,42,44,40,["Qualified as the 48th and final team — beat Bolivia 2-1 in intercontinental playoff on March 31, 2026","Internet penetration: ~80%; 4G solid in urban areas; 5G delayed by conflict and sanctions","E-gov: improving — Iraq Digital Transformation Strategy 2030 launched","Fintech: emerging — ZainCash and Asia Hawala mobile money IS growing","Oxford AI: limited national AI strategy; significant IS capacity gap vs. Gulf neighbors"]],
+  ["Egypt","🇪🇬","CAF",67,55,62,58,60,54,["Digital Egypt 2030: national IS strategy investing $20B over 10 years","Fawry: 40M users — Middle East/Africa's most-used digital payment IS","5G: licensed 2024; rollout starting with Orange Egypt leading","E-gov: 95% of services digitized per official figures — verification gap exists","Oxford AI: national AI strategy; Cairo University AI Institute launching"]],
+  ["Algeria","🇩🇿","CAF",58,46,52,45,52,44,["4G coverage 90%+ population; 5G licensed but not deployed","E-gov: slow progress; many public services still paper-only","Fintech: Dahabiya e-wallet launched 2023 — first serious IS push","Oxford AI: limited national strategy; university programs small","Cyber: among lower African scorers; ANSC improving but limited capacity"]],
+  ["Tunisia","🇹🇳","CAF",70,58,65,58,62,58,["Tech clusters: Lac Technopole, El Ghazala — Africa's first tech park (1999)","Digital Tunisia 2025 strategy: IS-focused national modernization program","Fintech: ePay and Flouci IS platforms gaining mobile payment traction","5G: Ooredoo TN launched pilot 2024; below North African peers","Oxford AI: #3 Africa; strong engineering talent relative to GDP"]],
+  ["Ghana","🇬🇭","CAF",60,50,58,53,54,50,["E-gov: Ghana.gov IS portal — among West Africa's most digitized","Mobile IS: MTN MoMo has 18M+ users — leading West Africa payments IS","5G: MTN Ghana launched 2022; coverage 10% — early stage","Oxford AI: national AI policy 2023; Accra emerging as West Africa IS hub","Cyber: CERT-GH improving; limited capacity but improving frameworks"]],
+  ["Ivory Coast","🇨🇮","CAF",58,48,55,52,51,47,["Abidjan: West Africa's financial hub; IS investment accelerating","Wave and MTN MoMo dominant mobile money IS — 80%+ banked by IS","5G: Orange CI plans 2025 launch; currently 4G dominant","Oxford AI: limited; French-influenced IS education growing","E-gov: early stage; significant paper-based public service gaps remain"]],
+  ["Cape Verde","🇨🇻","CAF",72,55,70,58,64,57,["Island nation punches above weight: #2 Africa e-gov index (UN 2024)","NOSi IS: government digital platform serves all ministries centrally","5G: limited by island infrastructure; 4G solid across main islands","Oxford AI: small but forward-looking; tech talent emigration a challenge","High mobile penetration (110%); digital payments via VINTI4 growing"]],
+  ["Senegal","🇸🇳","CAF",58,47,56,50,52,47,["Smart Senegal 2025: national IS digital transformation strategy","Orange Money: 9M+ users — most adopted mobile payment IS in West Africa","5G: Free Senegal launched 2022 pilot; below average rollout pace","Oxford AI: limited but CTIC startup hub in Dakar incubates IS talent","E-gov: Sénégal Services portal — improving but execution gaps remain"]],
+  ["Canada","🇨🇦","CONCACAF",92,88,87,88,89,89,["World Cup 2026 co-host with advanced IS infrastructure for the tournament","Shopify (Ottawa): $100B+ e-commerce IS platform serving 4M merchants","AI: Montreal (Mila) and Toronto (Vector) are global AI IS research capitals","5G: Rogers, Bell, Telus — nationwide rollout 85%+","Oxford AI: #3 globally; federal AI Strategy 2017 was first in the world"]],
+  ["Mexico","🇲🇽","CONCACAF",68,60,62,64,62,58,["World Cup 2026 co-host; IS investment for tournament accelerating","OXXO Pay and BBVA Mexico: leading IS for unbanked cash-to-digital conversion","Fintech Law 2018: first in LatAm to formally regulate fintech IS","5G: America Movil (Telcel) leads; coverage 40–50% as of 2024","Oxford AI: national AI policy 2020; gap between policy and execution large"]],
+  ["Panama","🇵🇦","CONCACAF",70,58,65,62,63,58,["Panama Canal IS: one of the world's most IS-intensive logistics operations","Colon Free Trade Zone: IS-driven logistics and trade documentation","5G: Cable & Wireless/Liberty launched 2022; growing coverage in Panama City","Fintech: Yappy (Banistmo) IS — #1 mobile payment app in Panama","E-gov: Panama Digital Plan; moderate progress on service digitization"]],
+  ["Haiti","🇭🇹","CONCACAF",32,22,28,26,28,24,["Lowest DII score among World Cup nations — significant IS infrastructure gap","Internet penetration: 38%; 4G limited to Port-au-Prince area","Mobile money IS: MonCash (Digicel) serves 4M+ — critical for unbanked","E-gov: severely limited; most services paper-based post-earthquake damage","Oxford AI: no national strategy; IS capacity extremely limited"]],
+  ["Curaçao","🇨🇼","CONCACAF",74,55,66,60,64,57,["Autonomous country in the Kingdom of the Netherlands — Dutch IS standards apply","Internet: 85%+ penetration; UTS and Digicel provide solid 4G IS","E-gov: benefits from Dutch digital governance frameworks","Offshore finance hub: IS-intensive banking and trust services sector","5G: plans underway; small population (160K) enables faster IS deployment"]],
+  ["Iran","🇮🇷","AFC",62,48,55,50,52,50,["Snapp (Uber of Iran) and Digikala (Amazon of Iran): local IS ecosystems","Internet: 78% penetration but significant filtering of global IS platforms","5G: delayed due to sanctions; ICTS plan underway for deployment","Oxford AI: significant academic AI capacity but isolated from global IS","Fintech: Shaparak payment IS handles $500B+ annually — domestic IS strong"]],
+  ["Saudi Arabia","🇸🇦","AFC",88,82,84,80,82,80,["Vision 2030: $6.4B national digital transformation IS investment","NEOM: $500B smart city project — world's most ambitious IS urban build","5G: STC leads global rankings for 5G adoption speed (Ookla 2024)","Oxford AI: #17 globally; SDAIA national AI authority with strong mandate","E-gov: Absher IS — 540+ services; named top 3 global e-gov IS by UN"]],
+  ["Qatar","🇶🇦","AFC",90,80,86,82,84,82,["World Cup 2022 host — built one of most IS-intensive sporting events ever","5G: first country in MENA to launch commercial 5G (Ooredoo, 2018)","Oxford AI: national AI strategy with QAR 10B commitment; QCRI leads research","E-gov: Hukoomi IS portal; Qatar placed #27 globally in UN e-gov index","Hayya app: fan IS handling 1.4M visitors — tested digital identity at scale"]],
+  ["Jordan","🇯🇴","AFC",65,55,65,56,60,55,["Jordan Digital Economy roadmap: $1B IS investment target 2025","Estarta, Mawdoo3: Jordan IS companies serving Arabic digital content globally","5G: JRTC approved licenses 2023; Zain Jordan leading early deployment","Oxford AI: LTUC university driving AI IS programs; moderate national strategy","E-gov: Sanad IS portal — 200+ digital government services; MENA leader"]],
+  ["Uzbekistan","🇺🇿","AFC",64,52,62,54,58,54,["World Cup debut 2026 — IS transformation accelerating with government push","Digital Uzbekistan 2030: national IS strategy with e-gov, 5G, AI pillars","5G: Uztelecom piloting; first commercial deployment expected 2025–2026","Oxford AI: limited but growing; INHA Tashkent (South Korean IS university) key","E-gov: my.gov.uz IS portal — 200+ services; fastest improving in Central Asia"]],
+  ["New Zealand","🇳🇿","OFC",89,80,85,80,83,82,["UN e-gov index: top 5 globally — digital-first public services","5G: Spark, One NZ leading; 80%+ population coverage nationwide","Oxford AI: #10 globally; government AI framework published 2023","Fintech: high mobile payment IS adoption; Paymark IS dominant","Digital government: cloud-first IS policy since 2016; award-winning UX"]],
+  ["Scotland","🏴󠁧󠁢󠁳󠁣󠁴󠁿","UEFA",88,82,84,82,84,83,["Edinburgh Fintech: major hub — Skyscanner, FNZ, Nucleus IS companies","RBS/NatWest IS: major banking IS infrastructure based in Edinburgh","5G: BT/EE leading UK rollout; urban Scotland 85%+ 5G coverage","Oxford AI: benefits from UK AI strategy; Edinburgh University top 5 AI research","DigiCoast program: rural IS connectivity investment for Scottish islands"]],
+];
+
+// Compute DII composite score
+function computeDII(c) {
+  const [,,, internet, ai, egov, ecomm, cyber, skills] = c;
+  return Math.round(internet*0.20 + ai*0.20 + egov*0.15 + ecomm*0.20 + cyber*0.15 + skills*0.10);
+}
+
+function getTier(score) {
+  if (score >= 88) return ['S','tier-S'];
+  if (score >= 75) return ['A','tier-A'];
+  if (score >= 62) return ['B','tier-B'];
+  if (score >= 50) return ['C','tier-C'];
+  return ['D','tier-D'];
+}
+
+function barColor(score) {
+  if (score >= 85) return '#4ADE80';
+  if (score >= 70) return '#FCD34D';
+  if (score >= 55) return '#60A5FA';
+  return '#F87171';
+}
+
+// Sort & filter state
+let sortCol = -1, sortDir = 1, confFilter = 'ALL';
+let allData = COUNTRIES.map(c => ({
+  name:c[0], flag:c[1], conf:c[2],
+  internet:c[3], ai:c[4], egov:c[5], ecomm:c[6], cyber:c[7], skills:c[8],
+  facts:c[9], dii: computeDII(c)
+})).sort((a,b) => b.dii - a.dii);
+
+allData.forEach((d,i) => d.rank = i+1);
+
+function renderTable() {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  let data = allData.filter(d => {
+    const matchConf = confFilter === 'ALL' || d.conf === confFilter;
+    const matchQ = !q || d.name.toLowerCase().includes(q);
+    return matchConf && matchQ;
+  });
+  const body = document.getElementById('rank-body');
+  body.innerHTML = data.map((d,i) => {
+    const [tier, tc] = getTier(d.dii);
+    const pc = d.rank <= 3 ? `pos-${d.rank}` : 'pos-other';
+    return `<tr onclick="openModal('${d.name}')">
+      <td><div class="rank-pos ${pc}">${d.rank}</div></td>
+      <td><div class="country-cell"><span class="flag-emoji">${d.flag}</span><div><div class="country-name">${d.name}</div><div class="country-conf">${d.conf}</div></div></div></td>
+      <td><div class="score-bar-wrap">
+        <div class="score-bar-track"><div class="score-bar-fill" style="width:${d.dii}%;background:${barColor(d.dii)}"></div></div>
+        <span class="score-num" style="color:${barColor(d.dii)}">${d.dii}</span>
+      </div></td>
+      <td><span class="tier-badge ${tc}">${tier}</span></td>
+      <td><span class="score-num" style="color:${barColor(d.internet)}">${d.internet}</span></td>
+      <td><span class="score-num" style="color:${barColor(d.ai)}">${d.ai}</span></td>
+      <td><span class="score-num" style="color:${barColor(d.egov)}">${d.egov}</span></td>
+      <td><span class="score-num" style="color:${barColor(d.ecomm)}">${d.ecomm}</span></td>
+      <td><span class="score-num" style="color:${barColor(d.cyber)}">${d.cyber}</span></td>
+      <td><span class="score-num" style="color:${barColor(d.skills)}">${d.skills}</span></td>
+    </tr>`;
+  }).join('');
+}
+
+function filterTable() { renderTable(); }
+function filterConf(conf, btn) {
+  confFilter = conf;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderTable();
+}
+function sortTable(col) {
+  if (sortCol === col) sortDir *= -1; else { sortCol = col; sortDir = -1; }
+  document.querySelectorAll('table.rank-table thead th').forEach((th,i) => {
+    th.classList.remove('sort-asc','sort-desc');
+    if(i===col) th.classList.add(sortDir===1?'sort-asc':'sort-desc');
+  });
+  const keys = ['rank','name','dii','dii','internet','ai','egov','ecomm','cyber','skills'];
+  allData.sort((a,b) => sortDir * (typeof a[keys[col]]==='string' ? a[keys[col]].localeCompare(b[keys[col]]) : a[keys[col]] - b[keys[col]]));
+  renderTable();
+}
+
+// ── MODAL ──
+function openModal(name) {
+  const d = allData.find(x => x.name === name);
+  if(!d) return;
+  const [tier,tc] = getTier(d.dii);
+  document.getElementById('modal-flag').textContent = d.flag;
+  document.getElementById('modal-country').textContent = d.name;
+  document.getElementById('modal-conf').textContent = `${d.conf} · World Cup 2026`;
+  document.getElementById('modal-rank').textContent = `Global DII Rank #${d.rank} of 48 · Tier ${tier} · Score: ${d.dii}/100`;
+  const dims = [
+    ['Internet & 5G',d.internet,'#4ADE80'],
+    ['AI Readiness',d.ai,'#FCD34D'],
+    ['Digital Govt IS',d.egov,'#60A5FA'],
+    ['E-Commerce',d.ecomm,'#F472B6'],
+    ['Cybersecurity',d.cyber,'#FB923C'],
+    ['Digital Skills',d.skills,'#A78BFA']
+  ];
+  document.getElementById('modal-score-grid').innerHTML = dims.map(([l,s,c]) => `
+    <div class="modal-score-card">
+      <div class="msc-label">${l}</div>
+      <div class="msc-score" style="color:${c}">${s}</div>
+      <div class="msc-bar"><div class="msc-bar-fill" style="width:${s}%;background:${c}"></div></div>
+    </div>`).join('');
+  document.getElementById('modal-facts-list').innerHTML = d.facts.map(f =>
+    `<div class="fact-item"><span class="fact-icon">→</span><span>${f}</span></div>`).join('');
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal(e) { if(e.target.id==='modal-overlay') closeModalDirect(); }
+function closeModalDirect() { document.getElementById('modal-overlay').classList.remove('open'); }
+
+// ── DISCUSSION QUESTIONS ──
+// Named countries. Reasoning-first. Reveal sparks class debate.
+const TRIVIA_QUESTIONS = [
+
+  {cat:"💡 Surprising Leader",
+   q:"Cape Verde — an island nation of just 540,000 people, smaller than most cities — is considered a digital government leader in Africa, ahead of countries with 40x its population and far more resources. What most likely explains this?",
+   hint:"Think about what makes large governments SLOW to digitize — and why the opposite is true for tiny ones.",
+   opts:["Small countries get more international aid for technology","With fewer ministries, fewer citizens, and no legacy bureaucracy to fight, Cape Verde deployed one unified IS for everything — and actually finished it","Their citizens are more educated than larger nations","Small countries don't need as many digital services"],
+   ans:1,
+   exp:"Cape Verde's <strong>NOSi platform</strong> runs ALL government ministries from a single IS — something a country with 45 million people and 500 agencies finds almost impossible to coordinate. <em>Simplicity and focus beat budget and size.</em> A country that can make one clear IS decision and execute it fully often outperforms one paralyzed by complexity. What does this mean for large organizations — banks, hospitals, governments — where that same complexity is the enemy?"},
+
+  {cat:"💡 Surprising Leader",
+   q:"Uruguay — one of South America's smallest economies — is ranked #1 in Latin America for digital government services, ahead of Brazil, Argentina, and Colombia. What decision made in 2007 set everything in motion?",
+   hint:"It wasn't a technology investment. It was a human investment.",
+   opts:["Uruguay hired technology consultants from South Korea","Uruguay gave every public school student a laptop and internet connection — that generation is now the workforce running its digital public services today","International organizations built their digital systems for free","They copied Brazil's systems directly"],
+   ans:1,
+   exp:"Uruguay's <strong>Ceibal Plan</strong> gave a laptop and connectivity to every public schoolchild in 2007 — before most of the world considered this strategic. The students from that program are today's workforce. <em>IS leadership is not about wealth — it's about deciding that IS is a national priority and sustaining that decision across political cycles.</em> What would Costa Rica or Panama need to commit to today to be in Uruguay's position in 2035?"},
+
+  {cat:"💡 Surprising Leader",
+   q:"Nigeria — a non-qualifier in 2026 — produced Flutterwave (valued $3B+) and Paystack (acquired by Stripe), two of the world's most important fintech IS platforms, despite significant infrastructure challenges. How do you explain world-class IS innovation coming from a country with those constraints?",
+   hint:"What problem were the founders urgently trying to solve — and how many people shared that exact same problem?",
+   opts:["Nigeria has better engineering schools than Europe","When infrastructure is broken and banks exclude most of the population, the pain creates urgent demand — and that demand drives IS innovation faster than comfort ever could","Foreign companies built these systems and gave them Nigerian names","Nigeria has low taxes that attract startups"],
+   ans:1,
+   exp:"<strong>Necessity drove innovation.</strong> Nigeria's banking system excluded 60%+ of its population. Cross-border payments were painful and expensive. The founders weren't building luxury features — they were solving undeniable daily pain. <em>The markets with the biggest IS gaps often produce the most innovative IS solutions</em> because the demand is unignorable. What similar unmet IS needs might exist right now in Central America?"},
+
+  {cat:"🤔 What Does This Mean?",
+   q:"Brazil launched Pix — a free instant payment IS — in 2020. By 2023, 140 million people were using it. No payment system in history adopted that fast. What does this tell us about how IS adoption actually works?",
+   hint:"It wasn't viral marketing. It wasn't a beautiful app design. Something structural made this almost inevitable.",
+   opts:["Brazilians are unusually quick to adopt new technology","When a government removes ALL barriers at once — cost, access, complexity — AND makes participation mandatory for institutions, adoption becomes the path of least resistance","The system was so well-designed that people simply couldn't resist it","Brazil had no other payment systems to compete with"],
+   ans:1,
+   exp:"<strong>Pix</strong> worked because Brazil's central bank made it free for users, required every financial institution to support it, and designed it to work on any phone. Adoption wasn't a marketing victory — it was an IS design decision. <em>IS adoption is mostly about removing friction and aligning incentives, not about making impressive technology.</em> If your company deployed a new IS tomorrow, what are the three biggest frictions that would stop people from actually using it?"},
+
+  {cat:"🤔 What Does This Mean?",
+   q:"Qatar's Hayya IS app for the 2022 World Cup processed tickets for 1.4 million fans without crashing — technically flawless. But digital rights experts called it a failure. What does it mean for an IS to work technically but fail strategically?",
+   hint:"Fans used it. Data flowed. Tickets scanned. Everything ran. So what exactly went wrong?",
+   opts:["The app crashed during the final match","Technical success means the system runs. Strategic success means people trust it and it builds the foundation for future IS. Qatar's Hayya did the first and missed the second","Qatar simply didn't promote the app enough","It wasn't compatible with all phone brands"],
+   ans:1,
+   exp:"<strong>Hayya's</strong> privacy policy didn't explain what personal data was collected or how it would be used, and was only available in select languages. Cybersecurity researchers flagged it as a digital rights risk. <em>Technology performance ≠ IS success.</em> An IS that works but that people don't trust, don't understand, or that violates their rights is a liability — not an asset. How should Qatar have approached the data governance question before the app ever launched?"},
+
+  {cat:"🤔 What Does This Mean?",
+   q:"Germany is home to SAP — the enterprise IS used by 99 of the world's 100 largest companies. Yet Germany ranks near the bottom of EU nations for e-government services. Citizens still fax documents to government offices. How do you make sense of this contradiction?",
+   hint:"Being a world-class IS exporter and being an IS adopter internally are two completely different things.",
+   opts:["Germany's statistics must be wrong — a country that builds SAP cannot lag in e-gov","A country can lead globally in producing IS for others while failing to adopt IS internally — IS leadership in one domain does not automatically transfer to another","SAP is not actually used inside Germany","E-government IS simply not important for economic competitiveness"],
+   ans:1,
+   exp:"<strong>Germany's e-government paradox is real and well-documented.</strong> The country that exported SAP to 180 countries ranks in the bottom third of EU nations for digital public services — partly due to federal political complexity, a strong data privacy culture, and institutional inertia. <em>IS competitiveness is domain-specific.</em> You can be a global IS leader in manufacturing and a laggard in government services simultaneously. Where might your organization be Germany right now — world-class in one IS area, decades behind in another?"},
+
+  {cat:"🌍 Ready for What?",
+   q:"Haiti qualifies for the World Cup — a massive achievement. It also has the lowest digital infrastructure score of all 48 nations. Yet 4 million Haitians actively use MonCash, a mobile money system that requires no smartphone and no internet connection. What does this tell us about what 'digital readiness' actually means?",
+   hint:"Is it possible to be digitally excluded by traditional metrics AND digitally innovative at the same time?",
+   opts:["Haiti's digital score must be wrong","Digital readiness has multiple layers — a country can leapfrog traditional infrastructure and create real IS value using whatever technology people already have, even when headline metrics look poor","Mobile money is not real IS and should not count","Haiti is secretly more advanced than the rankings indicate"],
+   ans:1,
+   exp:"<strong>MonCash</strong> runs on USSD — basic SMS technology that works on any mobile phone, even without internet. Haiti skipped the bank branch layer entirely. This is <em>digital leapfrogging</em>: you don't always need to build the full infrastructure ladder. Design IS for what people actually have, and adoption follows. What IS solutions could be built in your country on the infrastructure people already carry in their pockets — right now, today?"},
+
+  {cat:"🌍 Ready for What?",
+   q:"Morocco — a middle-income country — launched a national AI strategy, deployed 5G, and is investing in digital infrastructure. A wealthier country in the same region has none of these. In 10 years, which is more likely to attract digital businesses and IS talent?",
+   hint:"Companies and talent go where rules are clear, infrastructure exists, and government signals long-term commitment.",
+   opts:["The wealthier country — money always wins in IS competition","Morocco — a coherent IS strategy creates certainty, attracts investment, and signals the commitment that builds the ecosystem companies want to be part of, regardless of current wealth levels","Neither — AI strategies almost never actually work","The wealthier country — it can always buy the infrastructure later when it needs to"],
+   ans:1,
+   exp:"<strong>IS strategy signals matter as much as current IS capability.</strong> Companies investing in AI look for infrastructure, talent, and certainty about the rules. Morocco's strategy creates all three signals. A wealthy country without a strategy creates uncertainty — and uncertainty is expensive for IS investors. This is why Singapore (small, few natural resources) became Asia's IS hub over larger, wealthier neighbors: <em>the signal that government treats IS as national infrastructure attracts the ecosystem that makes it real.</em> What signal is your country — or your employer — currently sending?"},
+
+  {cat:"🗳️ You Decide",
+   q:"A government must choose: Option A — build a perfect unified IS platform over 5 years before anyone uses it. Option B — launch simple digital services immediately, imperfect, and improve continuously based on real citizen usage. Which approach is more likely to actually deliver results?",
+   hint:"Think about what happens to IS projects that wait for perfection before launching.",
+   opts:["Option A — a unified platform built correctly once is better than patchy systems","Option B — real users reveal what good actually means. Waiting for perfect is the reason most government IS projects never launch at all","Both fail equally — government IS always fails","Option A, but only if the budget is large enough"],
+   ans:1,
+   exp:"<strong>Most failed government IS projects share one trait: they tried to build everything perfectly before anyone used them.</strong> South Korea's e-government leadership came from iterating on real citizen usage over many years. Uruguay's Ceibal Plan didn't wait for perfect infrastructure — it gave out laptops with what existed and built around real use. <em>A running imperfect system beats a planned perfect one every time</em> — because real users reveal what perfect actually means, and perfection without users is just expensive software on a shelf."},
+
+  {cat:"🗳️ You Decide",
+   q:"Two companies deploy identical IS technology. Company A trains its staff, changes internal processes to use data for decisions, and creates incentives rewarding IS usage. Company B deploys the same system but keeps existing processes and skips training. One year later — which has a competitive advantage, and what does this prove about IS?",
+   hint:"The technology is identical. So the variable is something entirely human.",
+   opts:["Company A — obviously, because they actually used it","Company B — it saved money by not spending on training","Neither — same technology always means same results","Company A, but only if their employees naturally liked the system"],
+   ans:0,
+   exp:"<strong>This seems obvious — but it is the most consistently violated principle in IS management.</strong> Research shows 60–70% of enterprise IS investments fail to deliver projected value. The #1 reason is not bad technology — it's deploying technology without changing the processes, culture, and incentives around it. Company A didn't just buy IS — it <em>adopted</em> IS. Company B bought expensive shelf-ware. <em>IS deployment and IS adoption are not the same thing</em> — and the gap between them is where most IS investment is wasted. Think of a system your organization deployed that followed Company B's pattern exactly."},
+];
+
+
+// ══════════════════════════════════════
+// ── DIMENSION CARDS ──
+const DIM_CARDS = [
+  {
+    n:1, weight:"20%", color:"#4ADE80", border:"rgba(74,222,128,.25)", bg:"rgba(74,222,128,.05)",
+    name:"Internet Infrastructure",
+    what:"Measures how connected a country's population and businesses are to digital networks. Covers internet penetration (% of population online), average download and upload speeds, mobile broadband quality, and 5G deployment and coverage.",
+    captures:"The reach and speed of the digital connection — whether people can get online, how fast, and on what kind of network. Countries with nationwide fiber and 5G coverage score highest on this dimension.",
+    misses:"What people can actually access once connected. Iran has 78% internet penetration but government filtering blocks most global IS platforms. The indicator measures the pipe — not what flows through it, whether it is affordable, or whether access is free and open.",
+    sources:["ITU Global ICT Development Index 2024","Ookla 5G Global Index (Q3 2024)","World Bank Digital Development Data","Speedtest Global Index (Ookla, 2024)"],
+    example:"Netherlands (97/100): hosts AMS-IX, Europe's largest internet exchange, with near-universal fiber. Haiti (32/100): 38% penetration, 4G limited to Port-au-Prince — yet 4M people still use MonCash mobile money via basic SMS, showing infrastructure gaps don't prevent all IS adoption."
+  },
+  {
+    n:2, weight:"20%", color:"#FCD34D", border:"rgba(252,211,77,.25)", bg:"rgba(252,211,77,.05)",
+    name:"AI Readiness",
+    what:"Measures a country's capacity to develop, deploy, and govern artificial intelligence systems. Includes: existence and funding of a national AI strategy, government investment in AI research institutions, size and quality of the AI talent pipeline, private sector AI activity, and data governance frameworks that make AI IS possible.",
+    captures:"Whether a country has made AI a national priority and built the surrounding ecosystem — research institutes, talent, investment, and regulation. Canada (88/100) leads partly because it published the world's first national AI strategy in 2017 and hosts the Mila Institute (Montreal) and Vector Institute (Toronto).",
+    misses:"Whether AI is actually being used by businesses and citizens in day-to-day IS. A government can publish a national AI strategy on Monday and have zero AI-powered business processes running on Tuesday. The indicator measures readiness and intent — not real adoption or economic impact.",
+    sources:["Oxford Insights AI Readiness Index 2023","Stanford AI Index Report 2024","IMD World Digital Competitiveness 2024","National government AI strategy publications"],
+    example:"Saudi Arabia (82/100): has a national AI authority (SDAIA), world-class 5G, and a $6.4B Vision 2030 digital investment. Yet analysts note AI's economic impact outside oil and finance remains limited — high readiness does not automatically produce high adoption."
+  },
+  {
+    n:3, weight:"15%", color:"#60A5FA", border:"rgba(96,165,250,.25)", bg:"rgba(96,165,250,.05)",
+    name:"Digital Government IS",
+    what:"Measures how extensively a government delivers public services through information systems — covering the availability of services online, quality of digital platforms, use of data in policy decisions, open government data initiatives, and the maturity of national digital identity infrastructure.",
+    captures:"Whether citizens and businesses can interact with the state through IS rather than paper and in-person visits. South Korea (94/100) consistently leads: a citizen can pay taxes, register a business, access medical records, and renew any license entirely from their phone, with no office visit required.",
+    misses:"Usage, trust, and real impact. A government can officially declare 95% of services 'digitized' while citizens continue using paper because the digital version is unreliable, not trusted, or inaccessible in practice. The indicator measures availability — not whether people use the services or whether outcomes have improved.",
+    sources:["UN E-Government Survey 2024","World Bank GovTech Maturity Index 2022","OECD Digital Government Index 2023","National digital government reports"],
+    example:"Germany (85/100) produces SAP — the world's most widely deployed enterprise IS, used in 180 countries. Yet Germany ranks near the bottom of EU nations for e-government adoption, with citizens still faxing documents to offices. IS production capacity and internal IS adoption are completely different things."
+  },
+  {
+    n:4, weight:"20%", color:"#F472B6", border:"rgba(244,114,182,.25)", bg:"rgba(244,114,182,.05)",
+    name:"E-Commerce & Fintech",
+    what:"Measures the adoption of digital commercial IS — including B2C e-commerce volume and penetration, digital payment infrastructure and usage rates, financial inclusion through IS (mobile money, digital banking), and the regulatory environment that enables or constrains fintech IS.",
+    captures:"How much of a country's economic activity flows through digital IS — whether consumers shop online, whether businesses transact digitally, and whether IS is bringing previously unbanked populations into the formal economy. Brazil (76/100) scores strongly: Pix reached 140M users in 3 years, the fastest financial IS adoption in history.",
+    misses:"IS innovation capacity for export. A country can score low domestically while producing globally significant IS companies. The indicator measures your population's IS adoption — not your country's ability to design and export IS to others. These are genuinely different capabilities.",
+    sources:["UNCTAD B2C E-commerce Index 2024","World Bank Global Findex Database 2022","GSMA Mobile Economy Reports 2024","Statista Digital Market Outlook 2024"],
+    example:"Haiti (26/100) scores very low by traditional metrics — yet MonCash serves 4M people on basic SMS. The indicator captures formal B2C e-commerce and bank-based digital payments, missing SMS-based financial IS that operates outside conventional infrastructure. Low scores can coexist with real IS innovation."
+  },
+  {
+    n:5, weight:"15%", color:"#FB923C", border:"rgba(251,146,60,.25)", bg:"rgba(251,146,60,.05)",
+    name:"Cybersecurity Maturity",
+    what:"Measures a country's institutional capacity to protect its digital infrastructure and respond to cyber threats. Covers: existence of a national cybersecurity strategy, CERT (Computer Emergency Response Team) operational capacity, legal frameworks for cybercrime, public-private collaboration on cyber defense, and participation in international cybersecurity norms.",
+    captures:"The strength of national-level cybersecurity institutions, policies, and response capability. Switzerland (91/100) and Netherlands (93/100) score highest — both have mature CERT operations, robust legal frameworks, and active international cooperation. Morocco (64/100) leads Africa with its DGSSI agency.",
+    misses:"Private sector IS security practices, where most breaches actually occur. In 2019, Ecuador suffered a breach exposing 20 million people's records — not through a government failure, but through a private analytics company storing legally aggregated government data in an unsecured cloud server. National cybersecurity frameworks do not reach every private IS decision.",
+    sources:["ITU Global Cybersecurity Index (GCI) 2024","National Cyber Power Index (Harvard Belfer Center) 2022","ENISA Threat Landscape Reports","National CERT capacity assessments"],
+    example:"Qatar (84/100) built strong IS security for the 2022 World Cup. Yet Hayya — its official fan IS app — was flagged by digital rights experts not for a technical breach, but for data governance failures: unclear privacy policies and opaque data use practices. High national security scores do not guarantee good IS design at the product level."
+  },
+  {
+    n:6, weight:"10%", color:"#A78BFA", border:"rgba(167,139,250,.25)", bg:"rgba(167,139,250,.05)",
+    name:"Digital Skills & Education",
+    what:"Measures the IS literacy and digital capability of a country's population and workforce. Includes ICT graduate rates, digital literacy programs in schools and professional training, availability of IS reskilling programs, and the proportion of the population with basic to advanced digital competencies.",
+    captures:"Whether people have the human capacity to use, build, and demand IS — the foundational layer that makes all other IS investment productive. Uruguay (77/100) scores above its economic peers because the Ceibal Plan (2007) gave every public schoolchild a laptop and internet connection, creating a generation of IS-literate workers now running the country's digital public services.",
+    misses:"This dimension carries the lowest weight in the DII at 10%. Many IS researchers argue this significantly underestimates its strategic importance. Without digital skills, fast internet goes unused, AI systems are ignored, e-government platforms go unvisited, and fintech IS serves only those already comfortable with technology. Skills are the human infrastructure that makes every other dimension matter — and their impact compounds over 15–20 years, long after the investment is made.",
+    sources:["World Economic Forum Future of Jobs Report 2023","UNESCO ICT in Education Statistics 2023","EU Digital Economy and Society Index (DESI) 2023","GSMA Connected Women & Digital Skills Reports"],
+    example:"Sweden (90/100): embedded IS literacy in its education system in the 1990s. Spotify, Klarna, and BankID emerged 10–15 years later — built by the generation that grew up in those classrooms. IS education investment and IS innovation output are separated by a generation. Countries that skip this dimension are borrowing against their digital future."
+  }
+];
+
+function buildDimCards() {
+  const el = document.getElementById('dim-cards');
+  if (!el) return;
+  el.innerHTML = DIM_CARDS.map(d => `
+    <div style="background:${d.bg};border:1px solid ${d.border};border-left:5px solid ${d.color};border-radius:6px;padding:26px 28px;">
+
+      <div style="display:flex;align-items:center;gap:16px;margin-bottom:20px;flex-wrap:wrap;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:48px;color:${d.color};line-height:1;opacity:.6;">${d.n}</div>
+        <div>
+          <div style="font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:.5px;color:var(--white);line-height:1.05;">${d.name}</div>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:${d.color};margin-top:4px;">Dimension ${d.n} of 6 &nbsp;·&nbsp; Weight: ${d.weight} of composite score</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div style="background:rgba(0,0,0,.18);border-radius:4px;padding:16px 18px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:${d.color};margin-bottom:8px;">What It Measures</div>
+          <div style="font-size:13px;color:rgba(248,250,252,.85);line-height:1.72;">${d.what}</div>
+        </div>
+        <div style="background:rgba(0,0,0,.18);border-radius:4px;padding:16px 18px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:${d.color};margin-bottom:8px;">What It Captures Well</div>
+          <div style="font-size:13px;color:rgba(248,250,252,.85);line-height:1.72;">${d.captures}</div>
+        </div>
+      </div>
+
+      <div style="background:rgba(248,113,113,.07);border:1px solid rgba(248,113,113,.2);border-radius:4px;padding:14px 18px;margin-bottom:12px;">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:#F87171;margin-bottom:6px;">⚠ What It Does NOT Capture</div>
+        <div style="font-size:13px;color:rgba(248,250,252,.8);line-height:1.72;">${d.misses}</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div style="background:rgba(0,0,0,.14);border-radius:4px;padding:14px 16px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-bottom:7px;">Data Sources Used</div>
+          <div style="font-size:12px;color:rgba(248,250,252,.6);line-height:1.7;">${d.sources.map(s=>'• '+s).join('<br>')}</div>
+        </div>
+        <div style="background:rgba(0,0,0,.14);border-radius:4px;padding:14px 16px;">
+          <div style="font-family:'JetBrains Mono',monospace;font-size:8px;letter-spacing:2px;text-transform:uppercase;color:var(--mist);margin-bottom:7px;">World Cup 2026 Example</div>
+          <div style="font-size:12px;color:rgba(248,250,252,.65);line-height:1.7;font-style:italic;">${d.example}</div>
+        </div>
+      </div>
+
+    </div>`).join('');
+}
+
+
+
+let triviaMode = 'surprising', currentQ = 0, score = 0, questions = [], correctCount = 0;
+
+function selectMode(mode) {
+  triviaMode = mode;
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('mode-' + mode).classList.add('selected');
+}
+function getQuestions() {
+  const all = [...TRIVIA_QUESTIONS];
+  if (triviaMode === 'surprising') return all.filter(q => q.cat.includes('Surprising')).sort(() => Math.random()-0.5).slice(0,8);
+  if (triviaMode === 'means')      return all.filter(q => q.cat.includes('What Does')).sort(() => Math.random()-0.5).slice(0,8);
+  if (triviaMode === 'decide')     return all.filter(q => q.cat.includes('You Decide') || q.cat.includes('Ready')).sort(() => Math.random()-0.5).slice(0,8);
+  return all.sort(() => Math.random()-0.5).slice(0,10);
+}
+function startTrivia() {
+  questions = getQuestions();
+  currentQ = 0; score = 0; correctCount = 0;
+  document.getElementById('trivia-setup').style.display = 'none';
+  document.getElementById('trivia-result').style.display = 'none';
+  document.getElementById('trivia-game').style.display = 'block';
+  showQuestion();
+}
+function showQuestion() {
+  const q = questions[currentQ];
+  document.getElementById('tg-qnum').textContent = `Question ${currentQ+1} of ${questions.length}`;
+  document.getElementById('tg-fill').style.width = `${((currentQ+1)/questions.length)*100}%`;
+  document.getElementById('tg-score').textContent = score;
+  document.getElementById('q-category').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.q;
+  document.getElementById('q-hint').textContent = `💡 Hint: ${q.hint}`;
+  document.getElementById('q-explanation').classList.remove('show');
+  document.getElementById('btn-next').classList.remove('show');
+  const og = document.getElementById('options-grid');
+  og.innerHTML = q.opts.map((o,i) => `<button class="option-btn" onclick="selectAnswer(${i})">${o}</button>`).join('');
+}
+function selectAnswer(idx) {
+  const q = questions[currentQ];
+  const btns = document.querySelectorAll('.option-btn');
+  btns.forEach(b => b.disabled = true);
+  btns[q.ans].classList.add('correct');
+  if (idx !== q.ans) btns[idx].classList.add('wrong');
+  else { score += 10; correctCount++; }
+  document.getElementById('tg-score').textContent = score;
+  document.getElementById('q-explanation').innerHTML = q.exp;
+  document.getElementById('q-explanation').classList.add('show');
+  document.getElementById('btn-next').textContent = currentQ < questions.length-1 ? 'Next Question →' : 'See Results →';
+  document.getElementById('btn-next').classList.add('show');
+}
+function nextQuestion() {
+  currentQ++;
+  if (currentQ >= questions.length) showResults();
+  else showQuestion();
+}
+function showResults() {
+  document.getElementById('trivia-game').style.display = 'none';
+  const pct = Math.round((correctCount/questions.length)*100);
+  const emojis = ['😬','😅','🤔','👍','🎯','🏆'];
+  const ei = Math.floor(pct/20);
+  const msgs = ["Keep studying the ranking! Try the IS Concepts tab.","Good start! Review the country profiles for more context.","Solid knowledge! You're connecting IS to real countries.","Great work! You understand IS in a global context.","Excellent! Almost perfect IS global awareness.","Perfect score! You're ready to lead digital transformation globally."];
+  document.getElementById('result-emoji').textContent = emojis[ei];
+  document.getElementById('result-title').textContent = pct >= 80 ? 'Digital Leader!' : pct >= 60 ? 'IS Analyst' : 'Keep Learning';
+  document.getElementById('result-score-display').textContent = `${score} pts · ${pct}%`;
+  document.getElementById('result-msg').textContent = msgs[ei];
+  document.getElementById('rb-correct').textContent = correctCount;
+  document.getElementById('rb-wrong').textContent = questions.length - correctCount;
+  document.getElementById('rb-pct').textContent = pct + '%';
+  document.getElementById('trivia-result').style.display = 'block';
+}
+function resetTrivia() {
+  document.getElementById('trivia-result').style.display = 'none';
+  document.getElementById('trivia-setup').style.display = 'block';
+}
+
+// ── CONCEPTS PANEL ──
+const CONCEPTS = [
+  {
+    icon:'🚀',
+    title:'Digital Adoption ≠ Digital Deployment',
+    def:'Deploying technology and having people actually change how they work because of it are completely different things. A country can build 5G towers and have 3% usage. A company can install a CRM and have salespeople still use Excel. Adoption means behavior change driven by IS — and that requires removing friction, building trust, and aligning incentives, not just buying the system.',
+    link:"Qatar's Hayya app was technically flawless — 1.4 million users processed. But trust failures meant it set back Qatar's IS credibility rather than building it. Brazil's Pix, by contrast, mandated participation AND removed all cost barriers — and became history's fastest-adopted financial IS. Same lesson, opposite execution."
+  },
+  {
+    icon:'🏗️',
+    title:'IS Infrastructure Comes Before IS Innovation',
+    def:'Every country that produces world-class IS companies or services first built a foundation: universal connectivity, digital identity systems, reliable payment rails, data governance. Startups and governments don\'t create digital ecosystems from scratch — they build on infrastructure that already exists. The decisions made about IS infrastructure today determine who leads in a decade.',
+    link:"Sweden built universal broadband in the 1990s and a national digital identity IS (BankID) in 2003. Spotify, Klarna, and iZettle came after — building on that foundation. Brazil deployed Pix in 2020; Nubank scaled to 100M users on top of it. Uruguay invested in schoolchildren's IS literacy in 2007; today those graduates run LatAm's best e-government IS."
+  },
+  {
+    icon:'⚡',
+    title:'Digital Leapfrogging — Skipping the Ladder',
+    def:'Some countries skip entire stages of traditional technology development and go directly to more advanced solutions — not because they\'re more innovative, but because the old infrastructure was never built. When designed correctly, IS can reach people on whatever technology they already carry. The constraint becomes the design brief, not the barrier.',
+    link:"Haiti skipped bank branches entirely and went straight to mobile money via basic SMS (MonCash, 4M users). Africa skipped landlines and went straight to mobile internet. The 2026 World Cup skipped incremental video review improvements and jumped directly to generative 3D spatial modeling for officiating. Leapfrogging is a strategic choice — not a coping mechanism."
+  },
+  {
+    icon:'🧱',
+    title:'The Human Side of IS Adoption',
+    def:'Technology explains about 20% of why IS adoption succeeds or fails. The other 80% is human: do people trust the system? Do they have the skills to use it? Do incentives reward using it? Did leadership model the change? Organizations and countries that treat IS adoption as a technology project consistently underperform. Those that treat it as a change management project consistently succeed.',
+    link:"Germany produces SAP — the world's most-used enterprise IS — yet ranks near the bottom of EU nations for internal e-government adoption. Citizens still fax documents to government offices. World-class IS production and world-class IS adoption are completely separate capabilities. Germany leads the world in the first and struggles with the second — and the difference is entirely human."
+  },
+  {
+    icon:'📈',
+    title:'IS Competitiveness Compounds Over Time',
+    def:'IS advantage is not created in a year — it accumulates. Each IS deployment generates data that improves the next system. Each generation trained in digital skills produces a more capable workforce. Each year of e-government operation reduces the cost of the next service. Countries and organizations that invest consistently in IS compound their lead; those that invest sporadically never close the gap with consistent investors.',
+    link:"South Korea has been #1 in e-government for 10+ consecutive years — each year building on the last. The gap between the USA (94/100) and Haiti (30/100) within the same World Cup confederation wasn't created in one year. It represents 30 years of compounding IS investment decisions on one side, and 30 years of their absence on the other. The same principle applies inside any organization."
+  },
+  {
+    icon:'🌍',
+    title:'Digital Leadership Is a Decision, Not a Destiny',
+    def:'Digital leadership is not determined by GDP, geography, population, or natural resources. It is determined by decisions: how early a government or organization decided IS is strategic infrastructure (not just IT); how consistently it invested across political or budget cycles; and how well it removed barriers — cost, trust, skills, access — for the people who need to adopt it. Small countries can lead. Rich countries can lag. The decision is the variable.',
+    link:"Canada (pop. 38M) published the world's first national AI strategy in 2017, before the AI boom, before it was obviously strategic. Uruguay (pop. 3.5M, one of LatAm's smaller economies) leads the region in digital government IS. Cape Verde (pop. 540K) outscores Algeria (pop. 45M) in e-government. None of these outcomes were inevitable. They were decisions."
+  },
+];
+document.getElementById('concept-grid').innerHTML = CONCEPTS.map(c => `
+  <div class="concept-card">
+    <div class="cc-icon">${c.icon}</div>
+    <div class="cc-title">${c.title}</div>
+    <div class="cc-def">${c.def}</div>
+    <div class="cc-wc-link">🌐 Evidence from the 48 Nations: ${c.link}</div>
+  </div>`).join('');
+
+
+// ── QUICK TRIVIA DATA ──
+const QUIZ_QUESTIONS = [
+
+  // ── ADOPTION ──
+  {cat:"🌐 Digital Adoption",
+   q:"What is the MAIN difference between 'deploying' an IS and 'adopting' an IS?",
+   hint:"Think about what happens after the system is installed.",
+   opts:["Deployment is more expensive","Deployment means the system is installed; adoption means people actually change how they work because of it","Adoption is only for large companies","They mean the same thing in IS management"],
+   ans:1,
+   exp:"<strong>Deployment and adoption are completely different outcomes.</strong> Studies show 60–70% of enterprise IS investments fail to deliver value — not because the technology was bad, but because organizations deployed it without changing the processes, incentives, and culture around it. <em>Technology on a shelf is just an expense. Technology that changes how people work is a competitive advantage.</em>"},
+
+  {cat:"🌐 Digital Adoption",
+   q:"Brazil's Pix payment IS reached 140 million users in 3 years — the fastest IS adoption in financial history. What was the single biggest reason?",
+   hint:"It was a structural decision, not a design or marketing one.",
+   opts:["It had a better user interface than competitors","The government made it free AND required every bank to support it — removing all friction at once","Brazilians adopt technology faster than other populations","It was built by a famous global tech company"],
+   ans:1,
+   exp:"<strong>Pix eliminated every adoption barrier simultaneously.</strong> Zero cost to users. Zero optional participation for banks. Works on any phone. This is the IS adoption blueprint: when you remove friction AND mandate institutional participation, adoption becomes the path of least resistance. The technology was secondary — the design of the adoption environment was everything."},
+
+  {cat:"🌐 Digital Adoption",
+   q:"A company launches a new IS platform. Two years later, 80% of employees still use the old system instead. Which is MOST likely the real reason?",
+   hint:"It's almost never about the technology itself.",
+   opts:["The new system is technically inferior","Employees were not trained, processes were not changed, and there were no incentives to switch — the human layer was ignored","The company chose the wrong software vendor","The internet connection was too slow"],
+   ans:1,
+   exp:"<strong>IS adoption fails at the human layer, not the technology layer.</strong> Training, process redesign, and incentive alignment are the three things organizations consistently skip — and they explain almost every IS adoption failure. Technology can be perfect; if people have no reason to change their habits and no support doing so, the old system wins every time."},
+
+  {cat:"🌐 Digital Adoption",
+   q:"Haiti has very low digital infrastructure but 4 million people use MonCash mobile money via basic SMS — no internet or smartphone needed. What IS concept does this represent?",
+   hint:"Haiti skipped an entire stage of infrastructure development.",
+   opts:["Technology Theater — impressive but not useful","Digital Leapfrogging — bypassing traditional infrastructure layers to adopt IS using what people already have","IS misalignment — wrong technology for the market","E-government — public sector IS deployment"],
+   ans:1,
+   exp:"<strong>Digital leapfrogging</strong> happens when a country or community skips traditional infrastructure and builds IS on what already exists. Haiti went from no banking infrastructure directly to mobile money. Africa skipped landlines and went straight to mobile internet. The insight: <em>design IS for what people actually have, not for what you wish they had</em> — and adoption can happen even under severe constraints."},
+
+  {cat:"🌐 Digital Adoption",
+   q:"Which factor is MOST likely to slow IS adoption in a country or organization, even when the technology is excellent?",
+   hint:"This factor is invisible in technical assessments but dominates in practice.",
+   opts:["Slow internet speeds","Low trust — when people don't trust that the system is safe, fair, or honest about how their data is used, they don't use it","High software licensing costs","Lack of cloud infrastructure"],
+   ans:1,
+   exp:"<strong>Trust is the invisible infrastructure of IS adoption.</strong> Qatar's Hayya app worked technically but failed because users didn't trust what was being done with their data. Estonia's e-government IS has near-universal adoption because it was built on decades of transparent data governance. Countries and organizations that invest in trust — through data governance, transparency, and security — see adoption rates that technology investment alone can never achieve."},
+
+  {cat:"🌐 Digital Adoption",
+   q:"Uruguay invested in giving every public school student a laptop and internet in 2007 — the Ceibal Plan. From an IS perspective, why is this considered a strategic investment, not just a social program?",
+   hint:"Fast-forward 15 years: who is running Uruguay's digital public services now?",
+   opts:["Because laptops are very cheap","Because it built a generation of IS-literate citizens who can now use, demand, and build digital systems — the human foundation that all other IS investment builds on","Because the UN paid for it entirely","Because it made Uruguay famous internationally"],
+   ans:1,
+   exp:"<strong>Digital skills are IS infrastructure for humans.</strong> The children who received laptops in 2007 are today's workforce running Uruguay's digital government services — ranked #1 in Latin America. IS investment in skills compounds over 15–20 years the same way infrastructure investment does. Uruguay understood that every other IS investment — connectivity, e-gov, AI — would underperform without a population capable of absorbing it. This is why it now leads the region."},
+
+  {cat:"🌐 Digital Adoption",
+   q:"Mexico passed Latin America's first Fintech Law in 2018, legally defining digital wallets, open banking, and crypto IS. After the law passed, IS investment in Mexican fintech doubled. What does this tell us about IS adoption?",
+   hint:"Companies invest millions when they know something specific about the future.",
+   opts:["Laws make technology work better technically","Legal certainty is IS infrastructure — companies invest in IS when they know the rules won't change overnight and users are legally protected","The law forced consumers to use digital payments","Laws always slow technology but Mexico was an exception"],
+   ans:1,
+   exp:"<strong>Regulation is IS infrastructure.</strong> Before the Fintech Law, companies like Clip and Mercado Pago operated in legal grey zones. After it, they invested at scale — because the rules were clear, user protection existed, and regulatory risk dropped. Countries without clear IS legal frameworks don't just have a legal gap; they have an IS adoption gap, because uncertainty is the most expensive thing in any investment decision."},
+
+  {cat:"🌐 Digital Adoption",
+   q:"A government deploys a world-class AI health IS in 10 hospitals. After 1 year, doctors are still using paper records. The IS works perfectly. What went wrong?",
+   hint:"The technology was not the bottleneck.",
+   opts:["The AI system must have had bugs","Doctors were not trained, clinical processes were not redesigned around the IS, and no incentive existed to change established habits — adoption requires more than deployment","The hospitals had bad internet","The government chose the wrong IS vendor"],
+   ans:1,
+   exp:"<strong>This is the most common IS management failure pattern: deploying technology into an unchanged human system.</strong> Doctors learn habits in medical school and reinforce them for decades. An IS dropped into that environment without training, workflow redesign, and leadership modeling the change will be ignored — regardless of how advanced it is. IS adoption is 20% technology and 80% organizational change management. The hospitals needed change leads, not just IT installers."},
+
+  // ── LEADERS ──
+  {cat:"🏅 Digital Leaders",
+   q:"South Korea has ranked #1 in the UN E-Government Index for over 10 consecutive years. What does this actually mean for a citizen in Seoul?",
+   hint:"Think about a routine government interaction — taxes, licenses, healthcare records.",
+   opts:["The government uses the most expensive computers available","A citizen can access 100% of public services digitally from their phone — taxes, business registration, medical records, licenses — without visiting any office","Korean government officials are more efficient than others","Korea exports e-government software to other countries"],
+   ans:1,
+   exp:"<strong>E-government IS eliminates the friction between citizens and the state.</strong> No queues, no paper forms, no wasted days. This matters economically: when businesses register digitally in hours instead of weeks, and workers don't lose days to bureaucracy, the entire economy runs faster. South Korea's decade of #1 rankings represents a compounding advantage — each year's data and experience makes the next service better. IS leadership in government IS economic infrastructure."},
+
+  {cat:"🏅 Digital Leaders",
+   q:"Sweden — population 10 million — produced Spotify, Klarna, iZettle, and BankID. What most explains world-class IS output from such a small country?",
+   hint:"These companies didn't create Sweden's digital ecosystem. They inherited something.",
+   opts:["Swedish people are naturally more creative than other populations","Sweden built universal broadband, a national digital identity IS (BankID), and high IS literacy decades before these companies launched — they built on that foundation","Sweden has low corporate taxes that attract startups","Small countries always produce more IS companies per capita"],
+   ans:1,
+   exp:"<strong>IS innovation follows IS infrastructure by 10–15 years.</strong> Sweden had universal broadband in the 1990s. BankID launched in 2003. Digital literacy was embedded in schools early. Spotify, Klarna, and the rest didn't create Sweden's digital ecosystem — they inherited it and built on top of it. <em>The decisions a country or organization makes about IS infrastructure today determine who leads in a decade.</em> What is your country investing in right now that its next generation will build on?"},
+
+  {cat:"🏅 Digital Leaders",
+   q:"Canada published the world's first national AI strategy in 2017 — before AI was mainstream, before ChatGPT, before the AI investment boom. Why does being FIRST with a national AI strategy matter for competitiveness?",
+   hint:"Think about what a strategy does that a good intention doesn't.",
+   opts:["It doesn't matter — results are all that count, not timing","First movers attract the researchers, investment, and talent that build the ecosystem — early commitment creates the conditions for everything that follows","Canada happened to have better AI researchers than other countries","National strategies are mostly symbolic and don't affect real competitiveness"],
+   ans:1,
+   exp:"<strong>First-mover IS strategy creates compounding advantages.</strong> Canada's 2017 strategy funded Mila (Montreal) and Vector Institute (Toronto), which attracted global AI researchers, which attracted companies, which created talent pipelines, which reinforced Canada's AI position. By the time other countries published AI strategies in 2019–2022, Canada had a 5-year head start in ecosystem building. <em>IS leadership is not just about what you build — it's about what you signal to researchers, investors, and talent.</em>"},
+
+  {cat:"🏅 Digital Leaders",
+   q:"Germany is home to SAP — the enterprise IS used by 99 of the world's 100 largest companies. Yet Germany ranks near the bottom of EU nations for e-government adoption. What is the IS lesson here?",
+   hint:"Producing world-class IS for others and adopting IS internally are completely separate things.",
+   opts:["Germany's e-government statistics must be incorrect","IS leadership is domain-specific — a country can be a global IS producer in manufacturing while being an IS laggard in government services","SAP is not actually German","E-government doesn't matter for a manufacturing-focused economy"],
+   ans:1,
+   exp:"<strong>Germany's paradox is real and well-studied.</strong> The country that exported SAP to 180 countries still has citizens faxing documents to government offices — partly due to federal complexity, strong data privacy culture, and institutional inertia. <em>IS competitiveness in one domain does not automatically transfer to another.</em> This is a universal lesson: your organization can be world-class in customer IS while running finance on spreadsheets. Strength in one IS area creates no immunity from weakness in another."},
+
+  {cat:"🏅 Digital Leaders",
+   q:"Morocco launched a national AI strategy, deployed 5G, and is investing in digital infrastructure — despite being a middle-income country. A wealthier neighbor has done none of these. Which country is better positioned for IS-driven growth in the next decade?",
+   hint:"What do investors and IS talent look for before choosing where to build?",
+   opts:["The wealthier country — financial resources always determine IS outcomes","Morocco — a coherent IS strategy signals certainty and commitment, which attracts investment and talent regardless of current wealth levels","Both equally — IS growth depends on population size","The wealthier country — it can always catch up by spending more later"],
+   ans:1,
+   exp:"<strong>IS strategy signals matter as much as current IS capability.</strong> Investors and talent choose locations based on three things: infrastructure, skills, and certainty. Morocco is building all three signals. A wealthy country without a strategy creates uncertainty — the most expensive thing for long-term IS investment. This is why Singapore became Asia's IS hub over larger, wealthier neighbors: <em>the signal that IS is national infrastructure attracts the ecosystem that makes it real.</em>"},
+
+  {cat:"🏅 Digital Leaders",
+   q:"Nigeria — a non-2026 qualifier — has world-class fintech companies (Flutterwave, Paystack) but scores lower overall on the Digital Inclusion Index than Morocco, which did qualify. What does this gap reveal about national IS development?",
+   hint:"One sector can be globally excellent while the broader national system lags.",
+   opts:["Nigeria's fintech companies must not be as successful as reported","Private sector IS innovation and national IS adoption are different things — one industry can be globally excellent while government IS, infrastructure, and digital skills across the economy lag behind","Morocco's statistics must be inflated","Fintech IS doesn't count in digital inclusion indexes"],
+   ans:1,
+   exp:"<strong>Sector-level IS leadership and national IS adoption are genuinely different capabilities.</strong> Nigeria's fintech ecosystem is globally respected — Flutterwave processes billions across Africa. But Nigeria's overall digital infrastructure, e-government, and cybersecurity maturity lag behind. This fragmented pattern — private sector racing ahead while public sector stalls — creates a two-speed economy. Countries that close this gap (South Korea) compound their advantage. Countries that don't create a ceiling on private sector IS growth eventually imposed by slow public sector IS."},
+
+  {cat:"🏅 Digital Leaders",
+   q:"Cape Verde (population 540,000) ranks ahead of many much larger, wealthier African nations in digital government IS. What is the primary IS management lesson from this?",
+   hint:"Think about what makes large-scale IS change so hard in big organizations.",
+   opts:["Small island nations always lead in technology","With fewer stakeholders, simpler governance, and no legacy IS to replace, Cape Verde could deploy a unified national IS and actually complete it — focus and simplicity beat budget and size","Cape Verde received substantial technology aid from Portugal","Small countries don't need complex IS so the comparison isn't fair"],
+   ans:1,
+   exp:"<strong>In IS adoption, organizational complexity is the enemy.</strong> Cape Verde's NOSi platform serves all government ministries from one IS — achievable because there are no competing regional authorities, no decades of incompatible legacy systems, and no thousands of bureaucrats protecting old workflows. Large organizations consistently underestimate how much complexity slows IS adoption. <em>A simpler, focused IS that gets deployed and used beats a comprehensive system that never gets adopted.</em> What complexity in your organization would you need to reduce first to make IS adoption actually happen?"},
+
+  {cat:"🏅 Digital Leaders",
+   q:"Qatar built world-class IS infrastructure for the 2022 World Cup — Hayya app, 40,000 IoT devices, smart stadiums. But cybersecurity experts flagged Hayya as a failure despite its technical performance. What important IS principle does this illustrate?",
+   hint:"The technology worked. Something else didn't.",
+   opts:["IS success is only measured by whether the technology runs without crashing","IS success requires both technical performance AND user trust, data ethics, and governance — you can fail strategically while succeeding technically","Qatar should have used a different technology partner","Cybersecurity experts always find something to criticize"],
+   ans:1,
+   exp:"<strong>Technical performance ≠ IS success.</strong> Hayya processed 1.4 million fans' tickets flawlessly. But its privacy policy was unclear, available only in select languages, and didn't explain how personal data would be used. This created a trust failure and a data rights failure — both IS failures, neither technical ones. <em>IS management is responsible for ALL dimensions of IS success: does it run, do people trust it, does it respect their rights, and does it build the foundation for future IS?</em> Qatar's Hayya passed the first test and failed the other three."},
+];
+
+let qMode = 'adoption', qCurrent = 0, qScore = 0, qQuestions = [], qCorrect = 0;
+
+function selectQMode(mode) {
+  qMode = mode;
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('qmode-' + mode).classList.add('selected');
+}
+
+function getQQuestions() {
+  const all = [...QUIZ_QUESTIONS];
+  if (qMode === 'adoption') return all.filter(q => q.cat.includes('Adoption')).sort(() => Math.random()-0.5).slice(0,8);
+  if (qMode === 'leaders')  return all.filter(q => q.cat.includes('Leaders')).sort(() => Math.random()-0.5).slice(0,8);
+  return all.sort(() => Math.random()-0.5).slice(0,10);
+}
+
+function startQuiz() {
+  qQuestions = getQQuestions();
+  qCurrent = 0; qScore = 0; qCorrect = 0;
+  document.getElementById('quiz-setup').style.display = 'none';
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-game').style.display = 'block';
+  showQuizQ();
+}
+
+function showQuizQ() {
+  const q = qQuestions[qCurrent];
+  const total = qQuestions.length;
+  document.getElementById('quiz-qnum').textContent = `Question ${qCurrent+1} of ${total}`;
+  document.getElementById('quiz-fill').style.width = `${((qCurrent+1)/total)*100}%`;
+  document.getElementById('quiz-score').textContent = qScore;
+  document.getElementById('quiz-cat').textContent = q.cat;
+  document.getElementById('quiz-text').textContent = q.q;
+  document.getElementById('quiz-hint').textContent = `💡 ${q.hint}`;
+  document.getElementById('quiz-exp').classList.remove('show');
+  document.getElementById('quiz-next').classList.remove('show');
+  const og = document.getElementById('quiz-opts');
+  og.innerHTML = q.opts.map((o,i) =>
+    `<button class="option-btn" onclick="answerQuiz(${i})">${o}</button>`
+  ).join('');
+}
+
+function answerQuiz(idx) {
+  const q = qQuestions[qCurrent];
+  const btns = document.querySelectorAll('#quiz-opts .option-btn');
+  btns.forEach(b => b.disabled = true);
+  btns[q.ans].classList.add('correct');
+  if (idx !== q.ans) btns[idx].classList.add('wrong');
+  else { qScore += 10; qCorrect++; }
+  document.getElementById('quiz-score').textContent = qScore;
+  document.getElementById('quiz-exp').innerHTML = q.exp;
+  document.getElementById('quiz-exp').classList.add('show');
+  document.getElementById('quiz-next').textContent = qCurrent < qQuestions.length-1 ? 'Next Question →' : 'See Results →';
+  document.getElementById('quiz-next').classList.add('show');
+}
+
+function nextQuizQ() {
+  qCurrent++;
+  if (qCurrent >= qQuestions.length) showQuizResults();
+  else showQuizQ();
+}
+
+function showQuizResults() {
+  document.getElementById('quiz-game').style.display = 'none';
+  const pct = Math.round((qCorrect/qQuestions.length)*100);
+  const emojis = ['😬','😅','🤔','👍','🎯','🏆'];
+  const titles = ['Keep Studying','Getting There','Good Thinking','Strong IS Knowledge','Expert Level','Perfect Score!'];
+  const msgs = [
+    'Review the explanations and try again — the concepts behind each answer are the real lesson.',
+    'Good start. The trickiest questions are about the human side of IS, not the technology.',
+    'Solid. You understand that IS adoption is mostly about people, not systems.',
+    'Great work. You are connecting IS theory to real country outcomes.',
+    'Excellent. You understand both what IS does and what stops it from working.',
+    'Perfect. You are ready to lead IS adoption in any organization.'
+  ];
+  const ei = Math.min(Math.floor(pct/20), 5);
+  document.getElementById('quiz-emoji').textContent = emojis[ei];
+  document.getElementById('quiz-title').textContent = titles[ei];
+  document.getElementById('quiz-score-final').textContent = `${qScore} pts · ${pct}%`;
+  document.getElementById('quiz-msg').textContent = msgs[ei];
+  document.getElementById('quiz-rb-correct').textContent = qCorrect;
+  document.getElementById('quiz-rb-wrong').textContent = qQuestions.length - qCorrect;
+  document.getElementById('quiz-rb-pct').textContent = pct + '%';
+  document.getElementById('quiz-result').style.display = 'block';
+}
+
+function resetQuiz() {
+  document.getElementById('quiz-result').style.display = 'none';
+  document.getElementById('quiz-setup').style.display = 'block';
+}
+
+function switchTab(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-'+id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ── INIT ──
+renderTable();
+buildDimCards();
+</script>
+</body>
+</html>
